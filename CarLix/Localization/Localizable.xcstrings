@@ -1,0 +1,199 @@
+{
+  "sourceLanguage" : "uk",
+  "strings" : {
+    "🔔" : {
+
+    },
+    "AddFuilengServiceAndLocalized" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add service, fueling"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Додавайте сервіс, пальне"
+          }
+        }
+      }
+    },
+    "AddingCarLocalized" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add car"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Додавайте авто"
+          }
+        }
+      }
+    },
+    "AddPermission" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add notification permission for CarLix to get convenience experience of using app"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Надайте дозвіл сповіщеня для CarLix аби отримати зрчуний досвід користування додатком"
+          }
+        }
+      }
+    },
+    "descriptionLocalized" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CarLix - app for history management for your car. Track fueling, service and other payment. Get notifications about car service. All history in your pocket"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CarLix - додаток для ведення історії вашого авто. Контролюйте пальне, сервіс та інші витрати. Отримуйте нагадування про обслуговування автівки. Уся статистика у вашій кишені"
+          }
+        }
+      }
+    },
+    "Hello, world!" : {
+
+    },
+    "LookAfterCar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Look after your car with"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Слідкуйте за своїм авто разом з"
+          }
+        }
+      }
+    },
+    "Next" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Далі"
+          }
+        }
+      }
+    },
+    "ReceiveNotificationLocalized" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "And receive notification about next service"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Та отримуйте сповіщення про наступний сервіс"
+          }
+        }
+      }
+    },
+    "TrackCarHistoryViewLocalized" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Track car history"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Слідкуйте за історією авто"
+          }
+        }
+      }
+    },
+    "TrackHistoryLocalized" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "for tracking history"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "для ведення історії"
+          }
+        }
+      }
+    },
+    "welcomeLocalized" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вітаємо"
+          }
+        }
+      }
+    },
+    "WeRecomend" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We recommend to turn on notification for CarLix. You can do this in settings"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Радимо Вам все ж таки увімкнути сповіщення для CarLix. Це можна зробити в налаштуваннях"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
