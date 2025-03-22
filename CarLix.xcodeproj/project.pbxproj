@@ -6,13 +6,32 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F490AA422D8EBAB300802102 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = F490AA412D8EBAB300802102 /* FirebaseFirestore */; };
+		F4C9F0362D8D552100DD2325 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F4C9F0352D8D552100DD2325 /* FirebaseAuth */; };
+		F4C9F0382D8D552F00DD2325 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = F4C9F0372D8D552F00DD2325 /* FirebaseCore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		F4B061B92D88811A00D3890B /* CarLix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarLix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F4C9F05C2D8D827400DD2325 /* Exceptions for "CarLix" folder in "CarLix" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F4B061B82D88811A00D3890B /* CarLix */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F4B061BB2D88811A00D3890B /* CarLix */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F4C9F05C2D8D827400DD2325 /* Exceptions for "CarLix" folder in "CarLix" target */,
+			);
 			path = CarLix;
 			sourceTree = "<group>";
 		};
@@ -23,6 +42,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4C9F0382D8D552F00DD2325 /* FirebaseCore in Frameworks */,
+				F4C9F0362D8D552100DD2325 /* FirebaseAuth in Frameworks */,
+				F490AA422D8EBAB300802102 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,6 +55,7 @@
 			isa = PBXGroup;
 			children = (
 				F4B061BB2D88811A00D3890B /* CarLix */,
+				F4C9F0342D8D552100DD2325 /* Frameworks */,
 				F4B061BA2D88811A00D3890B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +66,13 @@
 				F4B061B92D88811A00D3890B /* CarLix.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F4C9F0342D8D552100DD2325 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -65,6 +95,9 @@
 			);
 			name = CarLix;
 			packageProductDependencies = (
+				F4C9F0352D8D552100DD2325 /* FirebaseAuth */,
+				F4C9F0372D8D552F00DD2325 /* FirebaseCore */,
+				F490AA412D8EBAB300802102 /* FirebaseFirestore */,
 			);
 			productName = CarLix;
 			productReference = F4B061B92D88811A00D3890B /* CarLix.app */;
@@ -95,6 +128,9 @@
 			);
 			mainGroup = F4B061B02D88811A00D3890B;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F4C9F0332D8D550B00DD2325 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F4B061BA2D88811A00D3890B /* Products */;
 			projectDirPath = "";
@@ -258,12 +294,13 @@
 				DEVELOPMENT_TEAM = 6GA6W2287X;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CarLix/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -288,12 +325,13 @@
 				DEVELOPMENT_TEAM = 6GA6W2287X;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CarLix/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -329,6 +367,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F4C9F0332D8D550B00DD2325 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F490AA412D8EBAB300802102 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F4C9F0332D8D550B00DD2325 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		F4C9F0352D8D552100DD2325 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F4C9F0332D8D550B00DD2325 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		F4C9F0372D8D552F00DD2325 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F4C9F0332D8D550B00DD2325 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F4B061B12D88811A00D3890B /* Project object */;
 }
