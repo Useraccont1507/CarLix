@@ -8,13 +8,15 @@
 import Foundation
 
 final class FirstGreetingViewModel: ObservableObject {
-    private var notificationService: NotificationServiceProtocol?
+    private weak var coordinator: AppCoordinator?
+    private let notificationService: NotificationServiceProtocol?
     
     @Published var greetingStep: GreetingStep = .begin
     @Published var notificationAlertState = false
     @Published var notificationDismissedAlertState = false
     
-    init(notificationService: NotificationServiceProtocol? = nil) {
+    init(coordinator: AppCoordinator, notificationService: NotificationServiceProtocol? = nil) {
+        self.coordinator = coordinator
         self.notificationService = notificationService
     }
     
@@ -52,7 +54,7 @@ final class FirstGreetingViewModel: ObservableObject {
             }
             
         case .end:
-            print("Ended")
+            coordinator?.switchToAuth()
         }
     }
     

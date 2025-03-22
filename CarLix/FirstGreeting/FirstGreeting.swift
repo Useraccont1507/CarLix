@@ -65,7 +65,7 @@ struct FirstGreeting: View {
 }
 
 #Preview {
-    FirstGreeting(viewModel: FirstGreetingViewModel())
+    FirstGreeting(viewModel: FirstGreetingViewModel(coordinator: AppCoordinator()))
 }
 
 struct BeginView: View {
