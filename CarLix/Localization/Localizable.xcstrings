@@ -4,9 +4,6 @@
     "" : {
 
     },
-    "%@" : {
-
-    },
     "🔔" : {
       "extractionState" : "manual"
     },
@@ -129,6 +126,40 @@
         }
       }
     },
+    "Email" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
+    },
+    "EmailOrPasswordAreWrong" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It seems that this email is already used or the format entered is incorrect."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Схоже такий email вже використовується або ви ввели невірний формат"
+          }
+        }
+      }
+    },
     "EnterFirstAndLastNames" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -166,6 +197,9 @@
     "Hello, world!" : {
 
     },
+    "Hello, World!" : {
+
+    },
     "IncorrectSMS" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -182,6 +216,9 @@
           }
         }
       }
+    },
+    "Initializing..." : {
+
     },
     "LastStep" : {
       "extractionState" : "manual",
@@ -234,23 +271,6 @@
         }
       }
     },
-    "NumberIsUsed" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "It seems that this number is already in use or the format entered is incorrect."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Схоже такий номер уже використовується або ви ввели невірний формат"
-          }
-        }
-      }
-    },
     "Or" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -268,19 +288,36 @@
         }
       }
     },
-    "PhoneNumber" : {
+    "Password" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Phone number"
+            "value" : "Password"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Номер телефону"
+            "value" : "Пароль"
+          }
+        }
+      }
+    },
+    "PasswordRequirements" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password must contains at least 6 characters"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пароль повинен містити хоча б 6 символів"
           }
         }
       }
@@ -319,19 +356,19 @@
         }
       }
     },
-    "SendSMS" : {
+    "Register" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Send SMS"
+            "value" : "Register"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Відправити SMS"
+            "value" : "Зареєструватись"
           }
         }
       }
@@ -349,6 +386,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Увійти"
+          }
+        }
+      }
+    },
+    "SigningIn" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SignIn"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вхід"
           }
         }
       }
@@ -383,23 +437,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Зареєструватись"
-          }
-        }
-      }
-    },
-    "SMSCode" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SMS code"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SMS код"
           }
         }
       }
