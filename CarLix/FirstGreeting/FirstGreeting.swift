@@ -12,8 +12,12 @@ struct FirstGreeting: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(colors: [.mint, .white], startPoint: .topLeading, endPoint: .bottomTrailing)
-                .ignoresSafeArea()
+            LinearGradient(colors: [
+                Color.gray,
+                Color.brown,
+                Color.gray,
+            ], startPoint: .topLeading, endPoint: .bottomTrailing)
+            .ignoresSafeArea()
             VStack {
                 ZStack {
                     switch viewModel.greetingStep {
@@ -74,13 +78,13 @@ struct BeginView: View {
             VStack {
                 VStack(alignment: .leading) {
                     Text("welcomeLocalized")
-                        .font(.system(size: 46, weight: .bold))
+                        .font(.system(size: 46, weight: .semibold))
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.white)
                         .padding(.vertical)
                     
                     Text("descriptionLocalized")
-                        .font(.system(size: 20, weight: .semibold))
+                        .font(.system(size: 20, weight: .regular))
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.white)
                 }
@@ -107,13 +111,13 @@ struct AddCarView: View {
             VStack {
                 VStack(alignment: .leading) {
                     Text("AddingCarLocalized")
-                        .font(.system(size: 46, weight: .bold))
+                        .font(.system(size: 46, weight: .semibold))
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.white)
                         .padding(.vertical)
                     
                     Text("TrackHistoryLocalized")
-                        .font(.system(size: 20, weight: .semibold))
+                        .font(.system(size: 20, weight: .regular))
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.white)
                 }
@@ -140,7 +144,7 @@ struct AddFuelingAndServiceView: View {
         GeometryReader { proxy in
             VStack {
                 Text("AddFuilengServiceAndLocalized")
-                    .font(.system(size: 46, weight: .bold))
+                    .font(.system(size: 46, weight: .semibold))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.white)
                     .padding(.vertical)
@@ -166,7 +170,7 @@ struct TrackCarHistoryView: View {
         GeometryReader { proxy in
             VStack {
                     Text("TrackCarHistoryViewLocalized")
-                        .font(.system(size: 46, weight: .bold))
+                    .font(.system(size: 46, weight: .semibold))
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.white)
                         .padding(.vertical)
@@ -195,7 +199,7 @@ struct ReceiveNotificationView: View {
         GeometryReader { proxy in
             VStack(alignment: .center) {
                 Text("ReceiveNotificationLocalized")
-                    .font(.system(size: 46, weight: .bold))
+                    .font(.system(size: 46, weight: .semibold))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.white)
                     .padding(.vertical)
@@ -222,33 +226,40 @@ struct AllowNotificationView: View {
     
     var body: some View {
         VStack {
-            Text("🔔")
-                .font(.system(size: 32, weight: .bold))
-                .padding(.bottom, 4)
+            Image("BellIcon")
+                .resizable()
+                .frame(width: 46, height: 46)
+                .foregroundStyle(.white)
+                .padding(.bottom, 24)
             Text("AddPermission")
                 .font(.system(size: 16, weight: .regular))
                 .multilineTextAlignment(.center)
-                .foregroundStyle(.darkGreyText)
-                .padding(.bottom, 4)
+                .foregroundStyle(.white)
+                .padding(.bottom, 24)
             
             Button {
                 viewModel.nextStep()
             } label: {
                 Text("ок".uppercased())
-                    .font(.system(size: 16, weight: .bold))
+                    .font(.system(size: 16, weight: .semibold))
                     .foregroundStyle(.white)
-                    .padding(.vertical, 8)
-                    .padding(.horizontal)
+                    .padding(.vertical)
+                    .padding(.horizontal, 32)
                     .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .foregroundStyle(.mint)
+                        RoundedRectangle(cornerRadius: 100)
+                            .foregroundStyle(Color.accentColor)
                     )
             }
         }
         .padding()
+        .padding(.top, 40)
         .background(
-            RoundedRectangle(cornerRadius: 20)
-                .foregroundStyle(.white)
+            RoundedRectangle(cornerRadius: 30)
+                .fill(.gray.opacity(0.3))
+                .background(
+                    RoundedRectangle(cornerRadius: 30)
+                        .stroke(.white.opacity(0.5), lineWidth: 2)
+                )
         )
     }
 }
@@ -261,27 +272,32 @@ struct NotificationWasDeniedView: View {
             Text("WeRecomend")
                 .font(.system(size: 16, weight: .regular))
                 .multilineTextAlignment(.center)
-                .foregroundStyle(.darkGreyText)
-                .padding(.bottom, 4)
+                .foregroundStyle(.white)
+                .padding(.bottom, 24)
             
             Button {
                 viewModel.nextStep()
             } label: {
                 Text("ок".uppercased())
-                    .font(.system(size: 16, weight: .bold))
+                    .font(.system(size: 16, weight: .semibold))
                     .foregroundStyle(.white)
-                    .padding(.vertical, 8)
-                    .padding(.horizontal)
+                    .padding(.vertical)
+                    .padding(.horizontal, 32)
                     .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .foregroundStyle(.mint)
+                        RoundedRectangle(cornerRadius: 100)
+                            .foregroundStyle(Color.accentColor)
                     )
             }
         }
         .padding()
+        .padding(.top, 40)
         .background(
-            RoundedRectangle(cornerRadius: 20)
-                .foregroundStyle(.white)
+            RoundedRectangle(cornerRadius: 30)
+                .fill(.gray.opacity(0.3))
+                .background(
+                    RoundedRectangle(cornerRadius: 30)
+                        .stroke(.white.opacity(0.5), lineWidth: 2)
+                )
         )
     }
 }
@@ -324,17 +340,21 @@ struct NextButtonView: View {
         } label: {
             HStack {
                 Text("Next")
-                    .font(.system(size: 16, weight: .bold))
+                    .font(.system(size: 16, weight: .semibold))
                     .foregroundStyle(.white)
-                    .padding(.vertical)
-                    .padding(.leading)
+                    .padding(.vertical, 20)
+                    .padding(.leading, 20)
                 Image(systemName: "arrow.right")
                     .foregroundStyle(.white)
-                    .padding(.trailing)
+                    .padding(.trailing, 20)
             }
             .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .foregroundStyle(.mint)
+                RoundedRectangle(cornerRadius: 100)
+                    .fill(.gray.opacity(0.3))
+                    .overlay(content: {
+                        RoundedRectangle(cornerRadius: 100)
+                            .stroke(.white.opacity(0.5), lineWidth: 2)
+                    })
             )
         }
         .padding()
