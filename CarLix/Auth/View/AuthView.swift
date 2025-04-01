@@ -50,11 +50,7 @@ struct AuthView: View {
                     .padding(4)
                     .background(
                         RoundedRectangle(cornerRadius: 100)
-                            .fill(.gray.opacity(0.3))
-                            .overlay(content: {
-                                RoundedRectangle(cornerRadius: 100)
-                                    .stroke(.white.opacity(0.5), lineWidth: 2)
-                            })
+                            .foregroundStyle(.white.opacity(0.1))
                     )
                 }
                 
@@ -85,11 +81,7 @@ struct AuthView: View {
                     .padding(4)
                     .background(
                         RoundedRectangle(cornerRadius: 100)
-                            .fill(.gray.opacity(0.3))
-                            .overlay(content: {
-                                RoundedRectangle(cornerRadius: 100)
-                                    .stroke(.white.opacity(0.5), lineWidth: 2)
-                            })
+                            .foregroundStyle(.white.opacity(0.1))
                     )
                 }
             }

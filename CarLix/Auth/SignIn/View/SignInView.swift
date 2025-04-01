@@ -34,6 +34,7 @@ struct SignInView: View {
                             .foregroundStyle(.white)
                             .padding(.leading, 8)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.top)
                         
                         TextField("", text: $viewModel.email)
                             .autocorrectionDisabled(true)
@@ -44,9 +45,8 @@ struct SignInView: View {
                             .foregroundStyle(.white)
                             .padding()
                             .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(viewModel.isDataCorrect ? .white.opacity(0.5) : .red, lineWidth: 2)
-                                    .foregroundStyle(.white)
+                                RoundedRectangle(cornerRadius: 30)
+                                    .foregroundStyle(.white.opacity(0.1))
                             )
                             .padding(.bottom)
                         
@@ -65,9 +65,8 @@ struct SignInView: View {
                                 .foregroundStyle(.white)
                                 .padding()
                                 .background(
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .stroke(viewModel.isDataCorrect ? .white.opacity(0.5) : .red, lineWidth: 2)
-                                        .foregroundStyle(.white)
+                                    RoundedRectangle(cornerRadius: 30)
+                                        .foregroundStyle(.white.opacity(0.1))
                                 )
                             
                             Text("PasswordRequirements")
@@ -83,6 +82,7 @@ struct SignInView: View {
                                     .multilineTextAlignment(.leading)
                                     .foregroundStyle(.red)
                                     .padding(.leading, 8)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
                         .padding(.bottom)
@@ -91,16 +91,23 @@ struct SignInView: View {
                             viewModel.signIn()
                         } label: {
                             HStack {
-                                Image("SignInIcon")
-                                    .resizable()
-                                    .frame(width: 24, height: 24)
-                                    .foregroundStyle(.white)
-                                    .padding(.trailing, 3)
-                                    .background(
-                                        Circle()
-                                            .frame(width: 36, height: 36)
-                                    )
-                                    .frame(width: 46, height: 46)
+                                if viewModel.requestSended && !viewModel.resuestSuccessful {
+                                    ProgressView()
+                                        .progressViewStyle(.circular)
+                                        .tint(.white.opacity(0.5))
+                                        .frame(width: 46, height: 46)
+                                } else {
+                                    Image("SignInIcon")
+                                        .resizable()
+                                        .frame(width: 24, height: 24)
+                                        .foregroundStyle(.white)
+                                        .padding(.trailing, 3)
+                                        .background(
+                                            Circle()
+                                                .frame(width: 36, height: 36)
+                                        )
+                                        .frame(width: 46, height: 46)
+                                }
                                 
                                 Text("SignIn")
                                     .font(.system(size: 16, weight: .semibold))
@@ -109,23 +116,15 @@ struct SignInView: View {
                             }
                             .padding(4)
                             .background(
-                                RoundedRectangle(cornerRadius: 100)
-                                    .fill(.gray.opacity(0.3))
-                                    .overlay(content: {
-                                        RoundedRectangle(cornerRadius: 100)
-                                            .stroke(.white.opacity(0.5), lineWidth: 2)
-                                    })
+                                RoundedRectangle(cornerRadius: 30)
+                                    .foregroundStyle(.white.opacity(0.1))
                             )
                         }
                     }
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 30)
-                            .fill(.gray.opacity(0.3))
-                            .background(
-                                RoundedRectangle(cornerRadius: 30)
-                                    .stroke(.white.opacity(0.5), lineWidth: 2)
-                            )
+                            .foregroundStyle(.white.opacity(0.1))
                     )
                     
                     Spacer()

@@ -22,10 +22,23 @@ struct SignUpView: View {
             
             VStack {
                 VStack {
-                    Text("SigningUp")
-                        .font(.system(size: 32, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    HStack {
+                        Text("SigningUp")
+                            .font(.system(size: 32, weight: .semibold))
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        Spacer()
+                        
+                        Button {
+                            viewModel.close()
+                        } label: {
+                            Image("CloseIcon")
+                                .resizable()
+                                .frame(width: 36, height: 36)
+                                .foregroundStyle(.white.opacity(0.5))
+                        }
+                    }
                     
                     Spacer()
                     
@@ -35,6 +48,7 @@ struct SignUpView: View {
                             .foregroundStyle(.white)
                             .padding(.leading, 8)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.top)
                         
                         TextField("", text: $viewModel.email)
                             .autocorrectionDisabled(true)
@@ -45,9 +59,8 @@ struct SignUpView: View {
                             .foregroundStyle(.white)
                             .padding()
                             .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(viewModel.isDataCorrect ? .white.opacity(0.5) : .red, lineWidth: 2)
-                                    .foregroundStyle(.white)
+                                    RoundedRectangle(cornerRadius: 30)
+                                        .foregroundStyle(.white.opacity(0.1))
                             )
                             .padding(.bottom)
                         
@@ -65,41 +78,62 @@ struct SignUpView: View {
                             .foregroundStyle(.white)
                             .padding()
                             .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(viewModel.isDataCorrect ? .white.opacity(0.5) : .red, lineWidth: 2)
-                                    .foregroundStyle(.white)
+                                RoundedRectangle(cornerRadius: 30)
+                                    .foregroundStyle(.white.opacity(0.1))
                             )
                         
                         Text("PasswordRequirements")
                             .font(.system(size: 14, weight: .regular))
                             .multilineTextAlignment(.leading)
-                            .foregroundStyle(viewModel.isDataCorrect ? .white : .red)
+                            .foregroundStyle(viewModel.passwordIsNotCorrect ? .red : .white)
                             .padding(.leading, 8)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
                         
-                        if !viewModel.isDataCorrect {
-                            Text("EmailOrPasswordAreWrong")
+                        if viewModel.emailIsNotCorrect {
+                            Text("IncorrectEmail")
                                 .font(.system(size: 14, weight: .regular))
                                 .multilineTextAlignment(.leading)
                                 .foregroundStyle(.red)
                                 .padding(.leading, 8)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        
+                        if viewModel.emailIsAlreadyUsed {
+                            Text("EmailAlreadyUsed")
+                                .font(.system(size: 14, weight: .regular))
+                                .multilineTextAlignment(.leading)
+                                .foregroundStyle(.red)
+                        }
+                        
+                        if viewModel.undefinedError {
+                            Text("UndefinedError")
+                                .font(.system(size: 14, weight: .regular))
+                                .multilineTextAlignment(.leading)
+                                .foregroundStyle(.red)
                         }
                         
                         Button {
                             viewModel.register()
                         } label: {
                             HStack {
-                                Image("SignInIcon")
-                                    .resizable()
-                                    .frame(width: 24, height: 24)
-                                    .foregroundStyle(.white)
-                                    .padding(.trailing, 3)
-                                    .background(
-                                        Circle()
-                                            .frame(width: 36, height: 36)
-                                    )
-                                    .frame(width: 46, height: 46)
+                                if viewModel.requestSended && !viewModel.requestCompleted {
+                                    ProgressView()
+                                        .progressViewStyle(.circular)
+                                        .tint(.white.opacity(0.5))
+                                        .frame(width: 46, height: 46)
+                                } else {
+                                    Image("SignInIcon")
+                                        .resizable()
+                                        .frame(width: 24, height: 24)
+                                        .foregroundStyle(.white)
+                                        .padding(.trailing, 3)
+                                        .background(
+                                            Circle()
+                                                .frame(width: 36, height: 36)
+                                        )
+                                        .frame(width: 46, height: 46)
+                                }
                                 
                                 Text("SignIn")
                                     .font(.system(size: 16, weight: .semibold))
@@ -109,27 +143,25 @@ struct SignUpView: View {
                             .padding(4)
                             .background(
                                 RoundedRectangle(cornerRadius: 100)
-                                    .fill(.gray.opacity(0.3))
-                                    .overlay(content: {
-                                        RoundedRectangle(cornerRadius: 100)
-                                            .stroke(.white.opacity(0.5), lineWidth: 2)
-                                    })
+                                    .fill(.white.opacity(0.1))
                             )
+                            .padding(.top)
                         }
                     }
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 30)
-                            .fill(.gray.opacity(0.3))
-                            .background(
-                                RoundedRectangle(cornerRadius: 30)
-                                    .stroke(.white.opacity(0.5), lineWidth: 2)
-                            )
+                            .fill(.white.opacity(0.1))
+//                            .background(
+//                                RoundedRectangle(cornerRadius: 30)
+//                                    .stroke(.white.opacity(0.5), lineWidth: 2)
+//                            )
                     )
                     Spacer()
                 }
                 .padding()
             }
+            .toolbar(.hidden, for: .navigationBar)
         }
     }
 }
