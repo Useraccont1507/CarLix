@@ -8,12 +8,13 @@
 import Foundation
 
 final class FirstGreetingViewModel: ObservableObject {
-    private weak var coordinator: AppCoordinator?
+    private weak var coordinator: AppCoordinatorProtocol?
     private let notificationService: NotificationServiceProtocol?
     
     @Published var greetingStep: GreetingStep = .begin
     @Published var notificationAlertState = false
     @Published var notificationDismissedAlertState = false
+    @Published var blur: CGFloat = 0
     
     init(coordinator: AppCoordinator, notificationService: NotificationServiceProtocol? = nil) {
         self.coordinator = coordinator
@@ -39,6 +40,7 @@ final class FirstGreetingViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         if isAllowed {
                             self.notificationAlertState = false
+                            self.blur = 0
                             self.greetingStep = .end
                         } else {
                             self.notificationAlertState = false
@@ -48,8 +50,10 @@ final class FirstGreetingViewModel: ObservableObject {
                 }
             } else if notificationDismissedAlertState {
                 notificationDismissedAlertState = false
+                blur = 0
                 greetingStep = .end
             } else {
+                blur = 20
                 notificationAlertState = true
             }
             

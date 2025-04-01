@@ -40,9 +40,11 @@ struct FirstGreeting: View {
                         EndView()
                     }
                 }
+                .blur(radius: viewModel.blur)
                 .animation(.easeIn, value: viewModel.greetingStep)
                 
                 NextButtonView(viewModel: viewModel)
+                    .blur(radius: viewModel.blur)
             }
             .overlay {
                 if viewModel.notificationAlertState {
@@ -225,42 +227,40 @@ struct AllowNotificationView: View {
     @ObservedObject var viewModel: FirstGreetingViewModel
     
     var body: some View {
-        VStack {
-            Image("BellIcon")
-                .resizable()
-                .frame(width: 46, height: 46)
-                .foregroundStyle(.white)
-                .padding(.bottom, 24)
-            Text("AddPermission")
-                .font(.system(size: 16, weight: .regular))
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.white)
-                .padding(.bottom, 24)
-            
-            Button {
-                viewModel.nextStep()
-            } label: {
-                Text("ок".uppercased())
-                    .font(.system(size: 16, weight: .semibold))
+        ZStack {
+            VStack {
+                Image("BellIcon")
+                    .resizable()
+                    .frame(width: 46, height: 46)
                     .foregroundStyle(.white)
-                    .padding(.vertical)
-                    .padding(.horizontal, 32)
-                    .background(
-                        RoundedRectangle(cornerRadius: 100)
-                            .foregroundStyle(Color.accentColor)
-                    )
+                    .padding(.bottom, 24)
+                Text("AddPermission")
+                    .font(.system(size: 16, weight: .regular))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.white)
+                    .padding(.bottom, 24)
+                
+                Button {
+                    viewModel.nextStep()
+                } label: {
+                    Text("ок".uppercased())
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .padding(.vertical)
+                        .padding(.horizontal, 32)
+                        .background(
+                            RoundedRectangle(cornerRadius: 100)
+                                .foregroundStyle(.white.opacity(0.1))
+                        )
+                }
             }
+            .padding()
+            .padding(.top, 40)
+            .background(
+                RoundedRectangle(cornerRadius: 30)
+                    .foregroundStyle(.white.opacity(0.1))
+            )
         }
-        .padding()
-        .padding(.top, 40)
-        .background(
-            RoundedRectangle(cornerRadius: 30)
-                .fill(.gray.opacity(0.3))
-                .background(
-                    RoundedRectangle(cornerRadius: 30)
-                        .stroke(.white.opacity(0.5), lineWidth: 2)
-                )
-        )
     }
 }
 
@@ -285,7 +285,7 @@ struct NotificationWasDeniedView: View {
                     .padding(.horizontal, 32)
                     .background(
                         RoundedRectangle(cornerRadius: 100)
-                            .foregroundStyle(Color.accentColor)
+                            .foregroundStyle(.white.opacity(0.1))
                     )
             }
         }
@@ -293,11 +293,7 @@ struct NotificationWasDeniedView: View {
         .padding(.top, 40)
         .background(
             RoundedRectangle(cornerRadius: 30)
-                .fill(.gray.opacity(0.3))
-                .background(
-                    RoundedRectangle(cornerRadius: 30)
-                        .stroke(.white.opacity(0.5), lineWidth: 2)
-                )
+                .foregroundStyle(.white.opacity(0.1))
         )
     }
 }
@@ -349,12 +345,8 @@ struct NextButtonView: View {
                     .padding(.trailing, 20)
             }
             .background(
-                RoundedRectangle(cornerRadius: 100)
-                    .fill(.gray.opacity(0.3))
-                    .overlay(content: {
-                        RoundedRectangle(cornerRadius: 100)
-                            .stroke(.white.opacity(0.5), lineWidth: 2)
-                    })
+                RoundedRectangle(cornerRadius: 30)
+                    .foregroundStyle(.white.opacity(0.1))
             )
         }
         .padding()
