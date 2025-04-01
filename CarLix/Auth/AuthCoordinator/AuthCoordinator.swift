@@ -11,6 +11,7 @@ protocol AuthCoordinatorProtocol: CoordinatorProtocol {
     func showToSignUp()
     func showToSignIn()
     func completeAuth()
+    func closeSignUp()
 }
 
 final class AuthCoordinator: ObservableObject, AuthCoordinatorProtocol {
@@ -45,11 +46,11 @@ final class AuthCoordinator: ObservableObject, AuthCoordinatorProtocol {
         close()
     }
     
-    private func close() {
-        appCoordinator.switchToMain()
+    func closeSignUp() {
+        isSignUpPresented = false
     }
     
-    deinit {
-        print("Auth coordinator deinit")
+    private func close() {
+        appCoordinator.switchToMain()
     }
 }

@@ -22,6 +22,7 @@ struct AuthCoordinatorFlow: View {
                     authService: coordinator.authService,
                     storageService: coordinator.storageService)
                 signUpCoordinator.start()
+                    .interactiveDismissDisabled()
             })
     }
 }
