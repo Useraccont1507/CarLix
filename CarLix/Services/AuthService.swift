@@ -35,7 +35,7 @@ final class AuthService: AuthServiceProtocol {
     }
     
     func getIsUserEnterd() -> Bool {
-        guard let user = auth.currentUser else { return false }
+        guard let _ = auth.currentUser else { return false }
         return true
     }
     
