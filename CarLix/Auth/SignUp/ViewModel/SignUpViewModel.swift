@@ -8,15 +8,20 @@
 import Foundation
 
 final class SignUpViewModel: ObservableObject {
-    private weak var coordinator: SignUpCoordinator?
+    private weak var coordinator: SignUpCoordinatorProtocol?
     private let authService: AuthServiceProtocol?
     private let storageService: StorageServiceProtocol?
     
     @Published var email = ""
     @Published var password = ""
-    @Published var isDataCorrect = true
+    @Published var emailIsNotCorrect = false
+    @Published var passwordIsNotCorrect = false
+    @Published var emailIsAlreadyUsed = false
+    @Published var undefinedError = false
     @Published var userFirstAndLastName = ""
     @Published var isNameEmpty = false
+    @Published var requestSended = false
+    @Published var requestCompleted = false
     
     init(coordinator: SignUpCoordinator? = nil, authService: AuthServiceProtocol? = nil, storageService: StorageServiceProtocol? = nil) {
         self.coordinator = coordinator
@@ -25,24 +30,37 @@ final class SignUpViewModel: ObservableObject {
     }
     
     func register() {
-        guard isValidEmail(email) && !password.isEmpty else {
-            isDataCorrect = false
+        guard isValidEmail(email) else {
+            emailIsNotCorrect = true
+            return
+        }
+        
+        guard password.count >= 6 else {
+            passwordIsNotCorrect = true
             return
         }
         
         guard let authService = authService else { return }
         
+        requestSended = true
         Task {
             do {
                 try await authService.createUser(email: email, password: password)
                 
                 await MainActor.run {
+                    requestCompleted = true
                     coordinator?.moveToNameView()
                 }
             } catch {
                 print("Create user error: \(error.localizedDescription)")
                 await MainActor.run {
-                    isDataCorrect = false
+                    if error.localizedDescription.contains("email address is already in use") {
+                        requestCompleted = true
+                        emailIsAlreadyUsed = true
+                    } else {
+                        requestCompleted = true
+                        undefinedError = true
+                    }
                 }
             }
         }
@@ -63,6 +81,10 @@ final class SignUpViewModel: ObservableObject {
         } else {
             isNameEmpty = true
         }
+    }
+    
+    func close() {
+        coordinator?.closeWithoutAuth()
     }
     
     private func isValidEmail(_ email: String) -> Bool {

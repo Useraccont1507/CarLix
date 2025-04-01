@@ -10,6 +10,7 @@ import SwiftUI
 protocol SignUpCoordinatorProtocol: CoordinatorProtocol {
     func close()
     func moveToNameView()
+    func closeWithoutAuth()
 }
 
 enum SignUpViewType: Hashable {
@@ -18,7 +19,7 @@ enum SignUpViewType: Hashable {
 
 final class SignUpCoordinator: ObservableObject ,SignUpCoordinatorProtocol {
     
-    private weak var authCoordinator: AuthCoordinator?
+    private weak var authCoordinator: AuthCoordinatorProtocol?
     private var authService: AuthServiceProtocol?
     private var storageService: StorageServiceProtocol?
     
@@ -38,6 +39,10 @@ final class SignUpCoordinator: ObservableObject ,SignUpCoordinatorProtocol {
     
     func moveToNameView() {
         navigationPath.append(SignUpViewType.name)
+    }
+    
+    func closeWithoutAuth() {
+        authCoordinator?.closeSignUp()
     }
     
     func close() {
