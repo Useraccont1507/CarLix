@@ -143,19 +143,35 @@
         }
       }
     },
-    "EmailOrPasswordAreWrong" : {
+    "EmailAlreadyUsed" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "It seems that this email is already used or the format entered is incorrect."
+            "value" : "It seems that email is already used. Try another one"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Схоже такий email вже використовується або ви ввели невірний формат"
+            "value" : "Схоже email вже використовується. Спробуйте інший"
+          }
+        }
+      }
+    },
+    "EmailOrPasswordAreWrong" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email or password are wrong"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Невірний email або пароль"
           }
         }
       }
@@ -177,42 +193,25 @@
         }
       }
     },
-    "EnterSMSCode" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enter SMS code"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Введіть SMS код"
-          }
-        }
-      }
-    },
     "Hello, world!" : {
 
     },
     "Hello, World!" : {
 
     },
-    "IncorrectSMS" : {
+    "IncorrectEmail" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Oops. It seems that you entered incorrect SMS code. Try again"
+            "value" : " Email is incorrect"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Упс. Схоже ви невірно ввели SMS код. Спробуйте ще раз"
+            "value" : "Неправильний email"
           }
         }
       }
@@ -276,14 +275,14 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "Or"
+            "state" : "needs_review",
+            "value" : "or"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Або"
+            "value" : "або"
           }
         }
       }
@@ -322,23 +321,6 @@
         }
       }
     },
-    "PhoneNumberRequirments" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enter number in +380000000000 format"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Введіть номер у форматі +380000000000"
-          }
-        }
-      }
-    },
     "ReceiveNotificationLocalized" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -352,23 +334,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Та отримуйте сповіщення про наступний сервіс"
-          }
-        }
-      }
-    },
-    "Register" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Register"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Зареєструватись"
           }
         }
       }
@@ -396,7 +361,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "SignIn"
+            "value" : "Sign In"
           }
         },
         "uk" : {
@@ -413,7 +378,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sign In"
+            "value" : "Sign Up"
           }
         },
         "uk" : {
@@ -430,30 +395,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Signs Up"
+            "value" : "Sign Up"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Зареєструватись"
-          }
-        }
-      }
-    },
-    "SMSWasSendedOn" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SMS was send on"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SMS було відправлено на"
           }
         }
       }
@@ -488,6 +436,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "для ведення історії"
+          }
+        }
+      }
+    },
+    "UndefinedError" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oops. Something went wrong. Try again later."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Щось пішло не так. Спробуйте пізніше"
           }
         }
       }
