@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-protocol CoordinatorProtocol {
+protocol CoordinatorProtocol: AnyObject {
     func start() -> AnyView
 }
 
