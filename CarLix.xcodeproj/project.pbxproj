@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F490AA422D8EBAB300802102 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = F490AA412D8EBAB300802102 /* FirebaseFirestore */; };
+		F498779E2DAAA79300CAF5F3 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = F498779D2DAAA79300CAF5F3 /* FirebaseStorage */; };
 		F4C9F0362D8D552100DD2325 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F4C9F0352D8D552100DD2325 /* FirebaseAuth */; };
 		F4C9F0382D8D552F00DD2325 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = F4C9F0372D8D552F00DD2325 /* FirebaseCore */; };
 /* End PBXBuildFile section */
@@ -17,7 +18,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		F4C9F05C2D8D827400DD2325 /* Exceptions for "CarLix" folder in "CarLix" target */ = {
+		F40FB6772D9FCC8900D6B2FC /* Exceptions for "CarLix" folder in "CarLix" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -27,10 +28,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F4B061BB2D88811A00D3890B /* CarLix */ = {
+		F40FB6582D9FCC8900D6B2FC /* CarLix */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				F4C9F05C2D8D827400DD2325 /* Exceptions for "CarLix" folder in "CarLix" target */,
+				F40FB6772D9FCC8900D6B2FC /* Exceptions for "CarLix" folder in "CarLix" target */,
 			);
 			path = CarLix;
 			sourceTree = "<group>";
@@ -43,6 +44,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4C9F0382D8D552F00DD2325 /* FirebaseCore in Frameworks */,
+				F498779E2DAAA79300CAF5F3 /* FirebaseStorage in Frameworks */,
 				F4C9F0362D8D552100DD2325 /* FirebaseAuth in Frameworks */,
 				F490AA422D8EBAB300802102 /* FirebaseFirestore in Frameworks */,
 			);
@@ -54,9 +56,9 @@
 		F4B061B02D88811A00D3890B = {
 			isa = PBXGroup;
 			children = (
-				F4B061BB2D88811A00D3890B /* CarLix */,
 				F4C9F0342D8D552100DD2325 /* Frameworks */,
 				F4B061BA2D88811A00D3890B /* Products */,
+				F40FB6582D9FCC8900D6B2FC /* CarLix */,
 			);
 			sourceTree = "<group>";
 		};
@@ -91,13 +93,14 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				F4B061BB2D88811A00D3890B /* CarLix */,
+				F40FB6582D9FCC8900D6B2FC /* CarLix */,
 			);
 			name = CarLix;
 			packageProductDependencies = (
 				F4C9F0352D8D552100DD2325 /* FirebaseAuth */,
 				F4C9F0372D8D552F00DD2325 /* FirebaseCore */,
 				F490AA412D8EBAB300802102 /* FirebaseFirestore */,
+				F498779D2DAAA79300CAF5F3 /* FirebaseStorage */,
 			);
 			productName = CarLix;
 			productReference = F4B061B92D88811A00D3890B /* CarLix.app */;
@@ -384,6 +387,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F4C9F0332D8D550B00DD2325 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		F498779D2DAAA79300CAF5F3 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F4C9F0332D8D550B00DD2325 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 		F4C9F0352D8D552100DD2325 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
