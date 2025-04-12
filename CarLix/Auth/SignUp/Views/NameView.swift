@@ -13,24 +13,26 @@ struct NameView: View {
     var body: some View {
         ZStack {
             LinearGradient(colors: [
-                Color.gray,
-                Color.brown,
-                Color.gray,
+                Color.grayGradient,
+                Color.brownGradient,
+                Color.graphiteGradient,
             ], startPoint: .topLeading, endPoint: .bottomTrailing)
             .ignoresSafeArea()
             
             VStack {
-                    Text("LastStep")
-                        .font(.system(size: 32, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                Text("LastStep")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Spacer()
-                    
+                
                 VStack {
                     VStack(alignment: .leading) {
                         Text("EnterFirstAndLastNames")
-                            .font(.system(size: 16, weight: .semibold))
+                            .font(.headline)
+                            .fontWeight(.semibold)
                             .foregroundStyle(.white)
                             .padding(.leading, 8)
                         TextField("", text: $viewModel.userFirstAndLastName)
@@ -48,14 +50,15 @@ struct NameView: View {
                         viewModel.completeRegistration()
                     } label: {
                         Text("CompleteRegistration")
-                            .font(.system(size: 16, weight: .semibold))
+                            .font(.body)
+                            .fontWeight(.bold)
                             .foregroundStyle(.white)
                             .padding()
                             .padding(.horizontal)
                     }
                     .background(
-                            RoundedRectangle(cornerRadius: 30)
-                                .foregroundStyle(.white.opacity(0.1))
+                        RoundedRectangle(cornerRadius: 30)
+                            .foregroundStyle(.white.opacity(0.1))
                     )
                     .frame(maxWidth: .infinity, alignment: .center)
                 }
@@ -63,7 +66,7 @@ struct NameView: View {
                 .padding(.vertical)
                 .background(
                     RoundedRectangle(cornerRadius: 30)
-                        .foregroundStyle(.white.opacity(0.1))
+                        .foregroundStyle(.black.opacity(0.1))
                 )
                 
                 Spacer()

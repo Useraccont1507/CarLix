@@ -13,18 +13,20 @@ struct AuthView: View {
     var body: some View {
         ZStack {
             LinearGradient(colors: [
-                Color.gray,
-                Color.brown,
-                Color.gray,
+                Color.grayGradient,
+                Color.brownGradient,
+                Color.graphiteGradient,
             ], startPoint: .topLeading, endPoint: .bottomTrailing)
             .ignoresSafeArea()
+            
             VStack {
                 Text("Authorize")
-                    .font(.system(size: 32, weight: .semibold))
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical)
+                    .padding(.bottom)
                 Spacer()
                 
                 Button {
@@ -43,7 +45,8 @@ struct AuthView: View {
                             .frame(width: 46, height: 46)
                         
                         Text("SignUp")
-                            .font(.system(size: 16, weight: .semibold))
+                            .font(.body)
+                            .fontWeight(.bold)
                             .foregroundStyle(.white)
                             .padding(.trailing)
                     }
@@ -55,7 +58,8 @@ struct AuthView: View {
                 }
                 
                 Text("Or")
-                    .font(.system(size: 16, weight: .regular))
+                    .font(.body)
+                    .fontWeight(.medium)
                     .foregroundStyle(.white)
                 
                 Button {
@@ -74,7 +78,8 @@ struct AuthView: View {
                             .frame(width: 46, height: 46)
                         
                         Text("SignIn")
-                            .font(.system(size: 16, weight: .semibold))
+                            .font(.body)
+                            .fontWeight(.bold)
                             .foregroundStyle(.white)
                             .padding(.trailing)
                     }

@@ -14,9 +14,9 @@ struct SignUpView: View {
     var body: some View {
         ZStack {
             LinearGradient(colors: [
-                Color.gray,
-                Color.brown,
-                Color.gray,
+                Color.grayGradient,
+                Color.brownGradient,
+                Color.graphiteGradient,
             ], startPoint: .topLeading, endPoint: .bottomTrailing)
             .ignoresSafeArea()
             
@@ -24,7 +24,8 @@ struct SignUpView: View {
                 VStack {
                     HStack {
                         Text("SigningUp")
-                            .font(.system(size: 32, weight: .semibold))
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
@@ -44,7 +45,8 @@ struct SignUpView: View {
                     
                     VStack {
                         Text("Email")
-                            .font(.system(size: 16, weight: .semibold))
+                            .font(.headline)
+                            .fontWeight(.semibold)
                             .foregroundStyle(.white)
                             .padding(.leading, 8)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -65,7 +67,8 @@ struct SignUpView: View {
                             .padding(.bottom)
                         
                         Text("Password")
-                            .font(.system(size: 16, weight: .semibold))
+                            .font(.headline)
+                            .fontWeight(.semibold)
                             .foregroundStyle(.white)
                             .padding(.leading, 8)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -83,7 +86,8 @@ struct SignUpView: View {
                             )
                         
                         Text("PasswordRequirements")
-                            .font(.system(size: 14, weight: .regular))
+                            .font(.footnote)
+                            .fontWeight(.regular)
                             .multilineTextAlignment(.leading)
                             .foregroundStyle(viewModel.passwordIsNotCorrect ? .red : .white)
                             .padding(.leading, 8)
@@ -92,7 +96,8 @@ struct SignUpView: View {
                         
                         if viewModel.emailIsNotCorrect {
                             Text("IncorrectEmail")
-                                .font(.system(size: 14, weight: .regular))
+                                .font(.footnote)
+                                .fontWeight(.regular)
                                 .multilineTextAlignment(.leading)
                                 .foregroundStyle(.red)
                                 .padding(.leading, 8)
@@ -101,14 +106,16 @@ struct SignUpView: View {
                         
                         if viewModel.emailIsAlreadyUsed {
                             Text("EmailAlreadyUsed")
-                                .font(.system(size: 14, weight: .regular))
+                                .font(.footnote)
+                                .fontWeight(.regular)
                                 .multilineTextAlignment(.leading)
                                 .foregroundStyle(.red)
                         }
                         
                         if viewModel.undefinedError {
                             Text("UndefinedError")
-                                .font(.system(size: 14, weight: .regular))
+                                .font(.footnote)
+                                .fontWeight(.regular)
                                 .multilineTextAlignment(.leading)
                                 .foregroundStyle(.red)
                         }
@@ -123,7 +130,7 @@ struct SignUpView: View {
                                         .tint(.white.opacity(0.5))
                                         .frame(width: 46, height: 46)
                                 } else {
-                                    Image("SignInIcon")
+                                    Image("SignUpIcon")
                                         .resizable()
                                         .frame(width: 24, height: 24)
                                         .foregroundStyle(.white)
@@ -135,8 +142,9 @@ struct SignUpView: View {
                                         .frame(width: 46, height: 46)
                                 }
                                 
-                                Text("SignIn")
-                                    .font(.system(size: 16, weight: .semibold))
+                                Text("SignUp")
+                                    .font(.body)
+                                    .fontWeight(.semibold)
                                     .foregroundStyle(.white)
                                     .padding(.trailing)
                             }
@@ -151,11 +159,7 @@ struct SignUpView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 30)
-                            .fill(.white.opacity(0.1))
-//                            .background(
-//                                RoundedRectangle(cornerRadius: 30)
-//                                    .stroke(.white.opacity(0.5), lineWidth: 2)
-//                            )
+                            .fill(.black.opacity(0.1))
                     )
                     Spacer()
                 }

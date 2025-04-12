@@ -13,11 +13,12 @@ struct FirstGreeting: View {
     var body: some View {
         ZStack {
             LinearGradient(colors: [
-                Color.gray,
-                Color.brown,
-                Color.gray,
+                Color.grayGradient,
+                Color.brownGradient,
+                Color.graphiteGradient,
             ], startPoint: .topLeading, endPoint: .bottomTrailing)
             .ignoresSafeArea()
+            
             VStack {
                 ZStack {
                     switch viewModel.greetingStep {
@@ -25,7 +26,7 @@ struct FirstGreeting: View {
                         BeginView()
                             .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
                     case .addCar:
-                        AddCarView()
+                        AddCarsView()
                             .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
                     case .addFuelingAndService:
                         AddFuelingAndServiceView()
@@ -80,13 +81,15 @@ struct BeginView: View {
             VStack {
                 VStack(alignment: .leading) {
                     Text("welcomeLocalized")
-                        .font(.system(size: 46, weight: .semibold))
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.white)
-                        .padding(.vertical)
+                        .padding(.bottom)
                     
                     Text("descriptionLocalized")
-                        .font(.system(size: 20, weight: .regular))
+                        .font(.title2)
+                        .fontWeight(.semibold)
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.white)
                 }
@@ -107,19 +110,21 @@ struct BeginView: View {
     }
 }
 
-struct AddCarView: View {
+struct AddCarsView: View {
     var body: some View {
         GeometryReader { proxy in
             VStack {
                 VStack(alignment: .leading) {
                     Text("AddingCarLocalized")
-                        .font(.system(size: 46, weight: .semibold))
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.white)
-                        .padding(.vertical)
+                        .padding(.bottom)
                     
                     Text("TrackHistoryLocalized")
-                        .font(.system(size: 20, weight: .regular))
+                        .font(.title2)
+                        .fontWeight(.semibold)
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.white)
                 }
@@ -146,10 +151,11 @@ struct AddFuelingAndServiceView: View {
         GeometryReader { proxy in
             VStack {
                 Text("AddFuilengServiceAndLocalized")
-                    .font(.system(size: 46, weight: .semibold))
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.white)
-                    .padding(.vertical)
+                    .padding(.bottom)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Spacer()
@@ -171,12 +177,13 @@ struct TrackCarHistoryView: View {
     var body: some View {
         GeometryReader { proxy in
             VStack {
-                    Text("TrackCarHistoryViewLocalized")
-                    .font(.system(size: 46, weight: .semibold))
-                        .multilineTextAlignment(.leading)
-                        .foregroundStyle(.white)
-                        .padding(.vertical)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                Text("TrackCarHistoryViewLocalized")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.leading)
+                    .foregroundStyle(.white)
+                    .padding(.bottom)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Spacer()
                 
@@ -201,10 +208,11 @@ struct ReceiveNotificationView: View {
         GeometryReader { proxy in
             VStack(alignment: .center) {
                 Text("ReceiveNotificationLocalized")
-                    .font(.system(size: 46, weight: .semibold))
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.white)
-                    .padding(.vertical)
+                    .padding(.bottom)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Spacer()
@@ -235,7 +243,8 @@ struct AllowNotificationView: View {
                     .foregroundStyle(.white)
                     .padding(.bottom, 24)
                 Text("AddPermission")
-                    .font(.system(size: 16, weight: .regular))
+                    .font(.callout)
+                    .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.white)
                     .padding(.bottom, 24)
@@ -244,7 +253,8 @@ struct AllowNotificationView: View {
                     viewModel.nextStep()
                 } label: {
                     Text("ок".uppercased())
-                        .font(.system(size: 16, weight: .semibold))
+                        .font(.body)
+                        .fontWeight(.bold)
                         .foregroundStyle(.white)
                         .padding(.vertical)
                         .padding(.horizontal, 32)
@@ -270,7 +280,8 @@ struct NotificationWasDeniedView: View {
     var body: some View {
         VStack {
             Text("WeRecomend")
-                .font(.system(size: 16, weight: .regular))
+                .font(.callout)
+                .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.white)
                 .padding(.bottom, 24)
@@ -279,7 +290,8 @@ struct NotificationWasDeniedView: View {
                 viewModel.nextStep()
             } label: {
                 Text("ок".uppercased())
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(.body)
+                    .fontWeight(.bold)
                     .foregroundStyle(.white)
                     .padding(.vertical)
                     .padding(.horizontal, 32)
@@ -304,10 +316,11 @@ struct EndView: View {
             VStack(alignment: .center) {
                 VStack(alignment: .leading) {
                     Text("LookAfterCar")
-                        .font(.system(size: 46, weight: .bold))
+                        .font(.callout)
+                        .fontWeight(.semibold)
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.white)
-                        .padding(.vertical)
+                        .padding(.bottom)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 
@@ -335,8 +348,9 @@ struct NextButtonView: View {
             viewModel.nextStep()
         } label: {
             HStack {
-                Text("Next")
-                    .font(.system(size: 16, weight: .semibold))
+                Text("Далі")
+                    .font(.body)
+                    .fontWeight(.bold)
                     .foregroundStyle(.white)
                     .padding(.vertical, 20)
                     .padding(.leading, 20)
@@ -350,6 +364,5 @@ struct NextButtonView: View {
             )
         }
         .padding()
-    
     }
 }

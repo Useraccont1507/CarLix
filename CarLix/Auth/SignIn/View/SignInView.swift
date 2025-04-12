@@ -13,16 +13,17 @@ struct SignInView: View {
     var body: some View {
         ZStack {
             LinearGradient(colors: [
-                Color.gray,
-                Color.brown,
-                Color.gray,
+                Color.grayGradient,
+                Color.brownGradient,
+                Color.graphiteGradient,
             ], startPoint: .topLeading, endPoint: .bottomTrailing)
             .ignoresSafeArea()
             
             VStack {
                 VStack {
                     Text("SigningIn")
-                        .font(.system(size: 32, weight: .semibold))
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
@@ -30,7 +31,8 @@ struct SignInView: View {
                     
                     VStack {
                         Text("Email")
-                            .font(.system(size: 16, weight: .semibold))
+                            .font(.callout)
+                            .fontWeight(.semibold)
                             .foregroundStyle(.white)
                             .padding(.leading, 8)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -52,7 +54,8 @@ struct SignInView: View {
                         
                         VStack {
                             Text("Password")
-                                .font(.system(size: 16, weight: .semibold))
+                                .font(.callout)
+                                .fontWeight(.semibold)
                                 .foregroundStyle(.white)
                                 .padding(.leading, 8)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -70,7 +73,8 @@ struct SignInView: View {
                                 )
                             
                             Text("PasswordRequirements")
-                                .font(.system(size: 14, weight: .regular))
+                                .font(.footnote)
+                                .fontWeight(.regular)
                                 .multilineTextAlignment(.leading)
                                 .foregroundStyle(viewModel.isDataCorrect ? .white : .red)
                                 .padding(.leading, 8)
@@ -78,7 +82,8 @@ struct SignInView: View {
                             
                             if !viewModel.isDataCorrect {
                                 Text("EmailOrPasswordAreWrong")
-                                    .font(.system(size: 14, weight: .regular))
+                                    .font(.footnote)
+                                    .fontWeight(.regular)
                                     .multilineTextAlignment(.leading)
                                     .foregroundStyle(.red)
                                     .padding(.leading, 8)
@@ -110,7 +115,8 @@ struct SignInView: View {
                                 }
                                 
                                 Text("SignIn")
-                                    .font(.system(size: 16, weight: .semibold))
+                                    .font(.body)
+                                    .fontWeight(.bold)
                                     .foregroundStyle(.white)
                                     .padding(.trailing)
                             }
@@ -124,7 +130,7 @@ struct SignInView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 30)
-                            .foregroundStyle(.white.opacity(0.1))
+                            .foregroundStyle(.black.opacity(0.1))
                     )
                     
                     Spacer()
