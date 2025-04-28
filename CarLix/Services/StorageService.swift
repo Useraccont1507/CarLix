@@ -15,6 +15,14 @@ protocol StorageServiceProtocol {
     func loadCars() async throws -> [Car]
     func editCar(car: Car) async throws
     func deleteCar(car: Car) async throws
+    func loadFuels(for car: Car) async throws -> [CarFuel]
+    func addFuel(fuels: CarFuel, for car: Car) async throws
+    func loadServices(for car: Car) async throws -> [CarService]
+    func addService(service: CarService, for car: Car) async throws
+    func deleteFuels(for car: Car) async throws
+    func deleteServices(for car: Car) async throws
+    func deleteOneFuel(fuel: CarFuel) async throws
+    func deleteOneService(service: CarService) async throws
 }
 
 final class StorageService: StorageServiceProtocol {
@@ -56,6 +64,8 @@ final class StorageService: StorageServiceProtocol {
     
     func loadCars() async throws -> [Car] {
         let userID = try getUserId()
+        
+        
         let snapshot = try await db.collection("users").document(userID).collection("cars").getDocuments()
         
         var result: [Car] = []
@@ -149,6 +159,65 @@ final class StorageService: StorageServiceProtocol {
         }
     }
     
+    func deleteFuels(for car: Car) async throws {
+        let id = try getUserId()
+        
+        await withThrowingTaskGroup(of: Void.self) { group in
+            for fuel in car.fuels {
+                group.addTask {
+                    let fuelReference = self.db.collection("users").document(id).collection("fuels").document(fuel.id)
+                    try await fuelReference.delete()
+                    
+                    if let imageUrlString = try await fuelReference.getDocument().data()?["documentsURL"] as? String,
+                       let url = URL(string: imageUrlString) {
+                        try await self.storage.reference(for: url).delete()
+                    }
+                }
+            }
+        }
+    }
+    
+    func deleteServices(for car: Car) async throws {
+        let id = try getUserId()
+        
+        await withThrowingTaskGroup(of: Void.self) { group in
+            for fuel in car.fuels {
+                group.addTask {
+                    let fuelReference = self.db.collection("users").document(id).collection("services").document(fuel.id)
+                    try await fuelReference.delete()
+                    
+                    if let imageUrlString = try await fuelReference.getDocument().data()?["documentsURL"] as? String,
+                       let url = URL(string: imageUrlString) {
+                        try await self.storage.reference(for: url).delete()
+                    }
+                }
+            }
+        }
+    }
+    
+    func deleteOneFuel(fuel: CarFuel) async throws {
+        let fuelReference = db.collection("users").document(try getUserId()).collection("fuels").document(fuel.id)
+        
+        try await fuelReference.delete()
+        
+        if let imageUrlString = try await fuelReference.getDocument().data()?["documentsURL"] as? String,
+           let url = URL(string: imageUrlString) {
+            try await storage.reference(for: url).delete()
+        }
+    }
+    
+    func deleteOneService(service: CarService) async throws {
+        let serviceReference = db.collection("users").document(try getUserId()).collection("services").document(service.id)
+        
+        try await serviceReference.delete()
+        
+        if let imageUrlString = try await serviceReference.getDocument().data()?["documents"] as? String,
+           let url = URL(string: imageUrlString) {
+            try await storage.reference(for: url).delete()
+        }
+    }
+    
+    
     private func generateCarFromDoc(data: [String : Any], docID: String) async -> Car? {
         
         guard let imageURL = data["imageURL"] as? String else {
@@ -232,6 +301,155 @@ final class StorageService: StorageServiceProtocol {
         )
     }
     
+    private func generateFuelsFromDoc(data: [String : Any], docID: String) async -> CarFuel? {
+        guard let carId = data["carID"] as? String,
+              !carId.isEmpty else { return nil }
+        
+        guard let liters = data["liters"] as? Int else { return nil }
+        
+        guard let fuelTypeRaw = data["fuelType"] as? String,
+              let fuelType = FuelType(rawValue: fuelTypeRaw) else { return nil }
+        
+        guard let currencyRaw = data["currency"] as? String,
+              let currency = Currency(rawValue: currencyRaw) else { return nil }
+        
+        guard let pricePerLiter = data["pricePerLiter"] as? Float else { return nil }
+        
+        guard let currentMileage = data["currentMileage"] as? Int else { return nil }
+        
+        guard let stationName = data["stationName"] as? String else { return nil }
+        
+        guard let stationAdress = data["stationAdress"] as? String else { return nil }
+        
+        guard let documentsURL = data["documentsURL"] as? String else { return nil }
+        
+        guard let dateTimestamp = data["date"] as? Timestamp else {
+            return nil
+        }
+        
+        return await CarFuel(
+            id: docID,
+            carID: carId,
+            liters: liters,
+            fuelType: fuelType,
+            currency: currency,
+            pricePerLiter: pricePerLiter == 0 ? nil : pricePerLiter,
+            currentMileage: currentMileage,
+            stationName: stationName,
+            stationAddress: stationAdress,
+            documents: try? getDocumentFromURL(urlString: documentsURL),
+            date: dateTimestamp.dateValue())
+    }
+    
+    private func generateServiceFromDoc(data: [String : Any], docID: String) async -> CarService? {
+        guard let carId = data["carID"] as? String,
+              !carId.isEmpty else { return nil }
+        
+        guard let workDescription = data["workDescription"] as? String,
+              !workDescription.isEmpty else { return nil }
+        
+        guard let detailedDescription = data["detailedDescription"] as? String else { return nil }
+        
+        guard let currentMileage = data["currentMileage"] as? Int else { return nil }
+        
+        guard let currencyRaw = data["currency"] as? String,
+              let currency = Currency(rawValue: currencyRaw) else { return nil }
+        
+        guard let price = data["price"] as? Float else { return nil }
+        
+        guard let stationName = data["stationName"] as? String else { return nil }
+        
+        guard let stationAdress = data["stationAdress"] as? String else { return nil }
+        
+        guard let documentsURL = data["documentsURL"] as? String else { return nil }
+        
+        guard let date = data["date"] as? Date else { return nil }
+        
+        guard let isNotified = data["isNotified"] as? Bool else { return nil }
+        
+        return await CarService(id: docID,
+                                carID: carId,
+                                workDescription: workDescription, detailedDescription: detailedDescription,
+                                currentMileage: currentMileage,
+                                currency: currency,
+                                price: price,
+                                stationName: stationName,
+                                stationAddress: stationAdress,
+                                documents: try? getDocumentFromURL(urlString: documentsURL),
+                                date: date,
+                                isNotified: isNotified,
+                                notificationDate: data["notificationDate"] as? Date)
+    }
+    
+    func loadFuels(for car: Car) async throws -> [CarFuel] {
+        let userID = try self.getUserId()
+        
+        let snapshot = try await db.collection("users").document(userID).collection("fuels").getDocuments()
+        
+        var result: [CarFuel] = []
+        
+        for document in snapshot.documents {
+            if let fuel = await generateFuelsFromDoc(data: document.data(), docID: document.documentID) {
+                result.append(fuel)
+            }
+        }
+        
+        return result.filter({$0.carID == car.id})
+    }
+    
+    func addFuel(fuels: CarFuel, for car: Car) async throws {
+        let userID = try getUserId()
+        
+        try await db.collection("users").document(userID).collection("fuels").document(fuels.id).setData([
+            "id": fuels.id,
+            "carID": car.id,
+            "liters": fuels.liters,
+            "fuelType": fuels.fuelType.rawValue,
+            "currency": fuels.currency.rawValue,
+            "pricePerLiter": fuels.pricePerLiter ?? 0,
+            "currentMileage": fuels.currentMileage,
+            "stationName": fuels.stationName,
+            "stationAdress": fuels.stationAddress,
+            "documentsURL": saveDocumentAndGetURL(document: fuels.documents, carId: car.id, fuelID: fuels.id, serviceID: nil),
+            "date": FieldValue.serverTimestamp()
+        ])
+    }
+    
+    func loadServices(for car: Car) async throws -> [CarService] {
+        let userID = try self.getUserId()
+        
+        let snapshot = try await db.collection("users").document(userID).collection("services").getDocuments()
+        
+        var result: [CarService] = []
+        
+        for document in snapshot.documents {
+            if let car = await generateServiceFromDoc(data: document.data(), docID: document.documentID) {
+                result.append(car)
+            }
+        }
+        
+        return result.filter({$0.carID == car.id})
+    }
+    
+    func addService(service: CarService, for car: Car) async throws {
+        let userID = try getUserId()
+        
+        try  await db.collection("users").document(userID).collection("services").document(service.id).setData([
+            "carID": service.carID,
+            "workDescription" : service.workDescription,
+            "detailedDescription" : service.detailedDescription,
+            "currentMileage" : service.currentMileage,
+            "currency" : service.currency.rawValue,
+            "price" : service.price,
+            "stationName" : service.stationName,
+            "stationAddress" : service.stationAddress,
+            "documents" : try saveDocumentAndGetURL(document: service.documents, carId: car.id, fuelID: nil, serviceID: service.id),
+            "date" : service.date,
+            "isNotified" : service.isNotified,
+            "notificationDate" : service.notificationDate
+        ])
+    }
+    
     private func saveImageAndGetURL(uiImage: UIImage?, carId: String) async throws -> String {
         guard let uiImage = uiImage else {
             return ""
@@ -253,7 +471,39 @@ final class StorageService: StorageServiceProtocol {
         return try await imageRef.downloadURL().absoluteString
     }
     
+    private func saveDocumentAndGetURL(document: UIImage?, carId: String, fuelID: String?, serviceID: String?) async throws -> String {
+        guard let document = document else { return "" }
+        
+        guard let imageData = document.jpegData(compressionQuality: 1.0) else {
+            print("Cannot get data from image")
+            return ""
+        }
+        
+        let id = fuelID ?? serviceID ?? UUID().uuidString
+
+        let imageRef = storage.reference()
+            .child("documents/\(try getUserId())/\(carId)/\(id)/document")
+        
+        _ = try await imageRef.putDataAsync(imageData)
+        return try await imageRef.downloadURL().absoluteString
+    }
+    
     private func getImageFromURL(urlString: String) async throws -> UIImage? {
+        guard !urlString.isEmpty else { return nil }
+        
+        let ref = storage.reference(forURL: urlString)
+        
+        let data = try await ref.data(maxSize: 5 * 1024 * 1024)
+        
+        guard let image = UIImage(data: data) else {
+            print("Can not get image from data")
+            return nil
+        }
+        return image
+    }
+    
+    private func getDocumentFromURL(urlString: String) async throws -> UIImage? {
+        guard !urlString.isEmpty else { return nil }
         let ref = storage.reference(forURL: urlString)
         
         let data = try await ref.data(maxSize: 5 * 1024 * 1024)
