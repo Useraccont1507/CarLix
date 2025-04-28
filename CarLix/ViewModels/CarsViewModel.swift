@@ -34,12 +34,12 @@ class CarsViewModel: ObservableObject {
     
     func presentFullDescription(for car: Car) {
         getCar(for: car)
-        carsCoordinator?.callAndHideTabBar()
+        carsCoordinator?.hideTabBar()
         isFullDescriprionPresented = true
     }
     
     func hideFullDescription() {
-        carsCoordinator?.callAndHideTabBar()
+        carsCoordinator?.showTabBar()
         isFullDescriprionPresented = false
     }
     
@@ -52,8 +52,17 @@ class CarsViewModel: ObservableObject {
     }
     
     func moveToAdd() {
-        carsCoordinator?.callAndHideTabBar()
+        carsCoordinator?.hideTabBar()
         carsCoordinator?.pushToAdd()
+    }
+    
+    func moveToStats() {
+        guard let car = carToPresentFullDescription else {
+            print("smth went wrong with move to stats")
+            return
+        }
+        
+        carsCoordinator?.pushToStats(car: car)
     }
     
     func loadCars() {
@@ -93,7 +102,8 @@ class CarsViewModel: ObservableObject {
                 
                 await MainActor.run {
                     deleteStatusState = .successful
-                    
+                    isFullDescriprionPresented = false
+                    carsCoordinator?.hideTabBar()
                     loadCars()
                 }
             } catch {

@@ -13,12 +13,23 @@
 		F4C9F0382D8D552F00DD2325 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = F4C9F0372D8D552F00DD2325 /* FirebaseCore */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		F484E87B2DBE75E0001CC5B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F4B061B12D88811A00D3890B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F4B061B82D88811A00D3890B;
+			remoteInfo = CarLix;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		F484E8772DBE75E0001CC5B1 /* CarLixTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CarLixTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4B061B92D88811A00D3890B /* CarLix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarLix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		F40FB6772D9FCC8900D6B2FC /* Exceptions for "CarLix" folder in "CarLix" target */ = {
+		F484E9C52DBE8C91001CC5B1 /* Exceptions for "CarLix" folder in "CarLix" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -28,10 +39,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F40FB6582D9FCC8900D6B2FC /* CarLix */ = {
+		F484E99E2DBE8C91001CC5B1 /* CarLix */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				F40FB6772D9FCC8900D6B2FC /* Exceptions for "CarLix" folder in "CarLix" target */,
+				F484E9C52DBE8C91001CC5B1 /* Exceptions for "CarLix" folder in "CarLix" target */,
 			);
 			path = CarLix;
 			sourceTree = "<group>";
@@ -39,6 +50,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F484E8742DBE75E0001CC5B1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4B061B62D88811A00D3890B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -58,7 +76,7 @@
 			children = (
 				F4C9F0342D8D552100DD2325 /* Frameworks */,
 				F4B061BA2D88811A00D3890B /* Products */,
-				F40FB6582D9FCC8900D6B2FC /* CarLix */,
+				F484E99E2DBE8C91001CC5B1 /* CarLix */,
 			);
 			sourceTree = "<group>";
 		};
@@ -66,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				F4B061B92D88811A00D3890B /* CarLix.app */,
+				F484E8772DBE75E0001CC5B1 /* CarLixTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -80,6 +99,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		F484E8762DBE75E0001CC5B1 /* CarLixTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F484E87D2DBE75E0001CC5B1 /* Build configuration list for PBXNativeTarget "CarLixTests" */;
+			buildPhases = (
+				F484E8732DBE75E0001CC5B1 /* Sources */,
+				F484E8742DBE75E0001CC5B1 /* Frameworks */,
+				F484E8752DBE75E0001CC5B1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F484E87C2DBE75E0001CC5B1 /* PBXTargetDependency */,
+			);
+			name = CarLixTests;
+			packageProductDependencies = (
+			);
+			productName = CarLixTests;
+			productReference = F484E8772DBE75E0001CC5B1 /* CarLixTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F4B061B82D88811A00D3890B /* CarLix */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4B061C72D88811B00D3890B /* Build configuration list for PBXNativeTarget "CarLix" */;
@@ -93,7 +132,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				F40FB6582D9FCC8900D6B2FC /* CarLix */,
+				F484E99E2DBE8C91001CC5B1 /* CarLix */,
 			);
 			name = CarLix;
 			packageProductDependencies = (
@@ -116,6 +155,10 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					F484E8762DBE75E0001CC5B1 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = F4B061B82D88811A00D3890B;
+					};
 					F4B061B82D88811A00D3890B = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -140,11 +183,19 @@
 			projectRoot = "";
 			targets = (
 				F4B061B82D88811A00D3890B /* CarLix */,
+				F484E8762DBE75E0001CC5B1 /* CarLixTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F484E8752DBE75E0001CC5B1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4B061B72D88811A00D3890B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -155,6 +206,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F484E8732DBE75E0001CC5B1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4B061B52D88811A00D3890B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -164,7 +222,51 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		F484E87C2DBE75E0001CC5B1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F4B061B82D88811A00D3890B /* CarLix */;
+			targetProxy = F484E87B2DBE75E0001CC5B1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		F484E87E2DBE75E0001CC5B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6GA6W2287X;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.illia.CarLixTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CarLix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CarLix";
+			};
+			name = Debug;
+		};
+		F484E87F2DBE75E0001CC5B1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6GA6W2287X;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.illia.CarLixTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CarLix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CarLix";
+			};
+			name = Release;
+		};
 		F4B061C52D88811B00D3890B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -351,6 +453,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F484E87D2DBE75E0001CC5B1 /* Build configuration list for PBXNativeTarget "CarLixTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F484E87E2DBE75E0001CC5B1 /* Debug */,
+				F484E87F2DBE75E0001CC5B1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F4B061B42D88811A00D3890B /* Build configuration list for PBXProject "CarLix" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

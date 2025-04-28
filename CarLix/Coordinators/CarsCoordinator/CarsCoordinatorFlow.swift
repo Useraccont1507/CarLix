@@ -23,6 +23,8 @@ struct CarsCoordinatorFlow: View {
                     switch path {
                     case .add: AddEditCarView(viewModel: AddEditCarViewModel(coordinator: coordinator, storageService: coordinator.storageService, action: .add, carToEdit: nil))
                     case .edit(let carToEdit): AddEditCarView(viewModel: AddEditCarViewModel(coordinator: coordinator, storageService: coordinator.storageService, action: .edit, carToEdit: carToEdit))
+                    case .stats(let car):
+                        FullCarDescriptionView(viewModel: FullCarDescriptionViewModel(coordinator: self.coordinator, storage: coordinator.storageService, car: car))
                     }
                 }
         }

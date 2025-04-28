@@ -124,7 +124,7 @@ final class AddEditCarViewModel: ObservableObject {
     
     func close() {
         blur = 0
-        coordinator?.callAndHideTabBar()
         coordinator?.popToRoot()
+        coordinator?.showTabBar()
     }
 }

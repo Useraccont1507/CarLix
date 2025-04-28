@@ -75,6 +75,23 @@
         }
       }
     },
+    "Cars" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cars"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Авто"
+          }
+        }
+      }
+    },
     "CompleteRegistration" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -193,11 +210,42 @@
         }
       }
     },
-    "Hello, world!" : {
+    "Fules" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuels"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заправки"
+          }
+        }
+      }
+    },
+    "Hide keyboard" : {
 
     },
-    "Hello, World!" : {
-
+    "Home" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Головна"
+          }
+        }
+      }
     },
     "IncorrectEmail" : {
       "extractionState" : "manual",
@@ -249,6 +297,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Слідкуйте за своїм авто разом з"
+          }
+        }
+      }
+    },
+    "MyCars" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My cars"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " Мої авто"
           }
         }
       }
@@ -334,6 +399,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Та отримуйте сповіщення про наступний сервіс"
+          }
+        }
+      }
+    },
+    "Services" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Services"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сервіси"
+          }
+        }
+      }
+    },
+    "ShowAll" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show all"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показати усе"
           }
         }
       }
@@ -440,6 +539,23 @@
         }
       }
     },
+    "TypeOfCar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тип кузова"
+          }
+        }
+      }
+    },
     "UndefinedError" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -490,6 +606,133 @@
           }
         }
       }
+    },
+    "Авто" : {
+
+    },
+    "Авто було видалено" : {
+
+    },
+    "Авто було успішно збережене" : {
+
+    },
+    "Ви точно бажаєте видалити авто?" : {
+
+    },
+    "Вибрати ще раз" : {
+
+    },
+    "Видалити" : {
+
+    },
+    "Видалити авто" : {
+
+    },
+    "Видалити пальне" : {
+
+    },
+    "Видалити сервіси" : {
+
+    },
+    "Витрачено коштів:" : {
+
+    },
+    "Готово" : {
+
+    },
+    "Далі" : {
+
+    },
+    "Дата" : {
+
+    },
+    "Додати" : {
+
+    },
+    "Додати авто" : {
+
+    },
+    "Додати пальне" : {
+
+    },
+    "Додати сервіс" : {
+
+    },
+    "Мої авто" : {
+
+    },
+    "Не було додано жодного запису" : {
+
+    },
+    "Не було додано жодної заправки" : {
+
+    },
+    "Не обов'язково" : {
+
+    },
+    "ок" : {
+
+    },
+    "ОК" : {
+
+    },
+    "Пальне" : {
+
+    },
+    "Редагувати авто" : {
+
+    },
+    "Редагувати інформацію" : {
+
+    },
+    "Сервіс" : {
+
+    },
+    "Скасувати" : {
+
+    },
+    "Сповістити про наступний сервіс" : {
+
+    },
+    "Статистика" : {
+
+    },
+    "Тип авто" : {
+
+    },
+    "Тип палива" : {
+
+    },
+    "Тип приводу" : {
+
+    },
+    "Тип трансмісії" : {
+
+    },
+    "Торкніться, щоб додати" : {
+
+    },
+    "У період з: %@ - %@" : {
+      "localizations" : {
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "У період з: %1$@ - %2$@"
+          }
+        }
+      }
+    },
+    "Упс\nЩось пішло не так\nвпевніться, що заповнили усі поля правильно " : {
+
+    },
+    "Упс\nЩось пішло не так\nСпробуйте пізніше" : {
+
+    },
+    "Упс. Щось пішло не так.\nСпробуйте пізніше" : {
+
+    },
+    "Усі записи будуть втрачені" : {
+
     }
   },
   "version" : "1.0"

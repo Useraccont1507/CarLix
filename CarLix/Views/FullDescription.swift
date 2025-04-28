@@ -41,9 +41,9 @@ struct FullDescription: View {
                                 Spacer()
                                 
                                 Button {
-                                    //
+                                    viewModel.moveToStats()
                                 } label: {
-                                    Text("ShowAll")
+                                    Text("Статистика")
                                         .font(.system(size: 18, weight: .semibold))
                                         .foregroundStyle(.white)
                                         .padding(.horizontal)

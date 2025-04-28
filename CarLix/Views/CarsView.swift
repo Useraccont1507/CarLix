@@ -22,8 +22,9 @@ struct CarsView: View {
             VStack {
                 HeaderBar(viewModel: viewModel)
                 
-                CarList(viewModel: viewModel)
-                    .transition(.opacity)
+                
+                    CarList(viewModel: viewModel)
+                        .transition(.opacity)
             }
             .blur(radius: viewModel.blur)
         }

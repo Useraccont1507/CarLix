@@ -34,7 +34,7 @@ enum TypeOfTransmission: String, CaseIterable {
     case automatic
 }
 
-enum Currency {
+enum Currency: String, Hashable, CaseIterable {
     case UAH
     case USD
 }
@@ -64,6 +64,7 @@ struct Car: Identifiable, Hashable {
 
 struct CarFuel: Hashable {
     var id: String = UUID().uuidString
+    var carID: String
     var liters: Int
     var fuelType: FuelType
     var currency: Currency = .UAH
@@ -73,22 +74,23 @@ struct CarFuel: Hashable {
         return pricePerLiter * Float(liters)
     }
     var currentMileage: Int
-    var stationName: String?
-    var stationAddress: String?
-    var documents: Data?
+    var stationName: String
+    var stationAddress: String
+    var documents: UIImage?
     var date: Date
 }
 
 struct CarService: Hashable {
     var id: String = UUID().uuidString
+    var carID: String
     var workDescription: String
-    var detailedDescription: String?
+    var detailedDescription: String
     var currentMileage: Int
     var currency: Currency = .USD
-    var price: Int
-    var stationName: String?
-    var stationAddress: String?
-    var documents: Data?
+    var price: Float
+    var stationName: String
+    var stationAddress: String
+    var documents: UIImage?
     var date: Date
     var isNotified: Bool
     var notificationDate: Date?

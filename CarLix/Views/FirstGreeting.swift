@@ -316,8 +316,8 @@ struct EndView: View {
             VStack(alignment: .center) {
                 VStack(alignment: .leading) {
                     Text("LookAfterCar")
-                        .font(.callout)
-                        .fontWeight(.semibold)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.white)
                         .padding(.bottom)

@@ -10,10 +10,14 @@ import SwiftUI
 struct TabViewCoordinatorFlow: View {
     @ObservedObject var coordinator: TabViewCoordinator
     @StateObject var carsCoordinator: CarsCoordinator
+    @StateObject var fuelsCoordinator: FuelsServicesCoordinator
+    @StateObject var servicesCoordinator: FuelsServicesCoordinator
     
     init(storageService: StorageServiceProtocol?, tabViewCoordinator: TabViewCoordinator) {
         self.coordinator = tabViewCoordinator
         _carsCoordinator = StateObject(wrappedValue: CarsCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator))
+        _fuelsCoordinator = StateObject(wrappedValue: FuelsServicesCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator, isFuelPresent: true))
+        _servicesCoordinator = StateObject(wrappedValue: FuelsServicesCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator, isFuelPresent: false))
     }
     
     var body: some View {
@@ -26,9 +30,9 @@ struct TabViewCoordinatorFlow: View {
             case .home:
                 EmptyView()
             case .fuels:
-                EmptyView()
+                fuelsCoordinator.start()
             case .services:
-                EmptyView()
+                servicesCoordinator.start()
             }
             
         }
@@ -58,20 +62,7 @@ struct TopBar: View {
             HStack {
                 Spacer()
                 
-                Button {
-                    coordinator.isUserProfilePresented.toggle()
-                } label: {
-                    Image(systemName: "person")
-                        .resizable()
-                        .frame(width: 26, height: 26)
-                        .foregroundStyle(.white.opacity(0.5))
-                        .background(
-                            Circle()
-                                .fill(.black.opacity(0.1))
-                                .frame(width: 50, height: 50)
-                        )
-                }
-                .frame(width: 50, height: 50)
+                
             }
             .padding()
             

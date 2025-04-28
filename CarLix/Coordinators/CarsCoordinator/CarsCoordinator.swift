@@ -10,12 +10,15 @@ import SwiftUI
 enum CarPath: Hashable {
     case add
     case edit(Car)
+    case stats(Car)
 }
 
 protocol CarsCoordinatorProtocol: CoordinatorProtocol {
-    func callAndHideTabBar()
+    func showTabBar()
+    func hideTabBar()
     func pushToAdd()
     func pushToEdit(carToEdit: Car)
+    func pushToStats(car: Car)
     func back()
     func popToRoot()
 }
@@ -36,8 +39,12 @@ class CarsCoordinator: ObservableObject, CarsCoordinatorProtocol {
         AnyView(CarsCoordinatorFlow(coordinator: self))
     }
     
-    func callAndHideTabBar() {
-        tabViewCoordinator?.toggleTabBar()
+    func showTabBar() {
+        tabViewCoordinator?.showTabBar()
+    }
+    
+    func hideTabBar() {
+        tabViewCoordinator?.hideTabBar()
     }
     
     func pushToAdd() {
@@ -46,6 +53,10 @@ class CarsCoordinator: ObservableObject, CarsCoordinatorProtocol {
     
     func pushToEdit(carToEdit: Car) {
         navigationPath.append(CarPath.edit(carToEdit))
+    }
+    
+    func pushToStats(car: Car) {
+        navigationPath.append(CarPath.stats(car))
     }
     
     func back() {

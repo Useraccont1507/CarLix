@@ -12,7 +12,8 @@ enum Selection: String, CaseIterable {
 }
 
 protocol TabViewCoordinatorProtocol: CoordinatorProtocol {
-    func toggleTabBar()
+    func showTabBar()
+    func hideTabBar()
     func changeSelection(_ selection: Selection)
     func getImageName(_ selection: Selection) -> String
 }
@@ -34,8 +35,12 @@ class TabViewCoordinator: ObservableObject, TabViewCoordinatorProtocol {
         AnyView(TabViewCoordinatorFlow(storageService: storageService, tabViewCoordinator: self))
     }
     
-    func toggleTabBar() {
-        isTabBarPresented.toggle()
+    func showTabBar() {
+        isTabBarPresented = true
+    }
+    
+    func hideTabBar() {
+        isTabBarPresented = false
     }
     
     func changeSelection(_ selection: Selection) {

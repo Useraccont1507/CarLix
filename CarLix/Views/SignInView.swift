@@ -126,6 +126,7 @@ struct SignInView: View {
                                     .foregroundStyle(.white.opacity(0.1))
                             )
                         }
+                        .disabled(viewModel.requestSended && !viewModel.resuestSuccessful)
                     }
                     .padding()
                     .background(

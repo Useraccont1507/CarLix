@@ -19,7 +19,7 @@ struct CarLixApp: App {
             //FirstGreeting(viewModel: FirstGreetingViewModel(notificationService: notificationService))
             //RegisterPhoneView(viewModel: SignUpViewModel())
             if let authService = delegate.authService {
-                let keychainService = delegate.keychainService // Отримуємо keychainService
+                let keychainService = delegate.keychainService
                 let storageService = StorageService(keychainService: keychainService!)
                 let coordinator = AppCoordinator(notificationService: notificationService, authService: authService, storageService: storageService)
                 coordinator.start()

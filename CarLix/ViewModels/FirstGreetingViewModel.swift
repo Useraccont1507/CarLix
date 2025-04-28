@@ -7,6 +7,15 @@
 
 import Foundation
 
+enum GreetingStep {
+    case begin
+    case addCar
+    case addFuelingAndService
+    case carHistory
+    case receiveNotification
+    case end
+}
+
 final class FirstGreetingViewModel: ObservableObject {
     private weak var coordinator: AppCoordinatorProtocol?
     private let notificationService: NotificationServiceProtocol?

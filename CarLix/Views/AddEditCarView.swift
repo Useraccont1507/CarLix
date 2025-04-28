@@ -521,6 +521,7 @@ struct SuccessSaving: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(.white.opacity(0.1))
         )
+        .padding()
     }
 }
 
