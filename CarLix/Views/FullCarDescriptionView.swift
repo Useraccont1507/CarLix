@@ -25,6 +25,7 @@ struct FullCarDescriptionView: View {
                 
                 DescriptionScrollView(viewModel: viewModel)
             }
+            .blur(radius: viewModel.blur)
             .overlay {
                 switch viewModel.deleteStatusState {
                 case .notTapped:
@@ -98,66 +99,81 @@ struct DescriptionScrollView: View {
     @ObservedObject var viewModel: FullCarDescriptionViewModel
     
     var body: some View {
-        ScrollView(.vertical) {
-            LazyVStack(spacing: 16) {
-                if let car = viewModel.car {
-                    if (!car.fuels.isEmpty && !car.services.isEmpty) || (!car.fuels.isEmpty || !car.services.isEmpty) {
-                        TotalCostsView(viewModel: viewModel)
-                    }
-                    
-                    if let car = viewModel.car {
-                        
-                        FullDescription(car: car)
-                        
-                    }
-                    
-                    FuelsView(viewModel: viewModel, car: car)
-                    ServicesView(viewModel: viewModel, car: car)
+        List {
+            if let car = viewModel.car {
+                if (!car.fuels.isEmpty && !car.services.isEmpty) || (!car.fuels.isEmpty || !car.services.isEmpty) {
+                    TotalCostsView(viewModel: viewModel)
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
                 }
                 
-                HStack(spacing: 16) {
-                    Button {
-                        viewModel.deleteStatusState = .notStarted
-                    } label: {
-                        HStack {
-                            Image(systemName: "trash")
-                                .foregroundStyle(.white)
-                            Text("Видалити авто")
-                                .font(.callout)
-                                .bold()
-                                .foregroundStyle(.white)
-                        }
-                    }
-                    .padding(.horizontal)
-                    .padding(.vertical, 8)
-                    .background(
-                        RoundedRectangle(cornerRadius: 30)
-                            .foregroundStyle(.red)
-                    )
+                if let car = viewModel.car {
                     
-                    Button {
-                        viewModel.moveToEdit()
-                    } label: {
-                        HStack {
-                            Image(systemName: "pencil")
-                                .foregroundStyle(.white)
-                            Text("Редагувати")
-                                .font(.callout)
-                                .bold()
-                                .foregroundStyle(.white)
-                        }
-                    }
-                    .padding(.horizontal)
-                    .padding(.vertical, 8)
-                    .background(
-                        RoundedRectangle(cornerRadius: 30)
-                            .foregroundStyle(.orange)
-                    )
+                    FullDescription(car: car)
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                    
                 }
-                .padding()
+                
+                FuelsView(viewModel: viewModel, car: car)
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+                
+                ServicesView(viewModel: viewModel, car: car)
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
             }
+            
+            HStack(spacing: 16) {
+                Spacer(minLength: 0)
+                
+                Button {
+                    viewModel.blur = 10
+                    viewModel.deleteStatusState = .notStarted
+                } label: {
+                    HStack {
+                        Image(systemName: "trash")
+                            .foregroundStyle(.white)
+                        Text("Видалити авто")
+                            .font(.callout)
+                            .bold()
+                            .foregroundStyle(.white)
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 8)
+                .background(
+                    RoundedRectangle(cornerRadius: 30)
+                        .foregroundStyle(.red)
+                )
+                .buttonStyle(.borderless)
+                
+                Button {
+                    viewModel.moveToEdit()
+                } label: {
+                    HStack {
+                        Image(systemName: "pencil")
+                            .foregroundStyle(.white)
+                        Text("Редагувати")
+                            .font(.callout)
+                            .bold()
+                            .foregroundStyle(.white)
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 8)
+                .background(
+                    RoundedRectangle(cornerRadius: 30)
+                        .foregroundStyle(.orange)
+                )
+                .buttonStyle(.borderless)
+                
+                Spacer(minLength: 0)
+            }
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
         }
-        .scrollIndicators(.hidden)
+        .listStyle(.plain)
     }
 }
 
@@ -208,7 +224,6 @@ struct TotalCostsView: View {
             RoundedRectangle(cornerRadius: 30)
                 .fill(.black.opacity(0.1))
         )
-        .padding(.horizontal)
     }
 }
 
@@ -245,6 +260,10 @@ struct FuelsView: View {
             
             if !car.fuels.isEmpty {
                 ForEach(car.fuels, id: \.id) { fuel in
+                    Rectangle()
+                        .fill(.white.opacity(0.1))
+                        .frame(height: 1)
+                        .frame(maxWidth: .infinity)
                     FuelRow(fuel: fuel)
                 }
             } else {
@@ -262,7 +281,6 @@ struct FuelsView: View {
             RoundedRectangle(cornerRadius: 30)
                 .fill(.black.opacity(0.1))
         )
-        .padding(.horizontal)
     }
 }
 
@@ -373,6 +391,11 @@ struct ServicesView: View {
             }
             
             if !car.services.isEmpty {
+                Rectangle()
+                    .fill(.white.opacity(0.1))
+                    .frame(height: 1)
+                    .frame(maxWidth: .infinity)
+                
                 ForEach(car.services, id: \.id) { service in
                     ServiceRow(service: service)
                 }
@@ -392,7 +415,6 @@ struct ServicesView: View {
             RoundedRectangle(cornerRadius: 30)
                 .fill(.black.opacity(0.1))
         )
-        .padding(.horizontal)
     }
 }
 
@@ -544,7 +566,6 @@ struct FullDescription: View {
             RoundedRectangle(cornerRadius: 30)
                 .fill(.black.opacity(0.1))
         )
-        .padding()
     }
 }
 
@@ -583,7 +604,7 @@ struct DeleteAlertView: View {
             
             HStack(spacing: 16) {
                 Button {
-                    print("Action")
+                    viewModel.blur = 0
                     viewModel.deleteStatusState = .notTapped
                 } label: {
                     Text("Скасувати")
@@ -631,6 +652,7 @@ struct DeleteCarsSuccessView: View {
                 .bold()
             
             Button {
+                viewModel.blur = 0
                 viewModel.deleteStatusState = .notTapped
             } label: {
                 Text("ОК")
@@ -664,6 +686,7 @@ struct DeleteCarsErrorView: View {
                 .foregroundStyle(.white)
             
             Button {
+                viewModel.blur = 0
                 viewModel.deleteStatusState = .notTapped
             } label: {
                 Text("ОК")

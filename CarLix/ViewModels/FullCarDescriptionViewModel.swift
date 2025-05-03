@@ -18,6 +18,7 @@ enum DeleteStatus {
 class FullCarDescriptionViewModel: ObservableObject {
     weak private var coordinator: CarsCoordinatorProtocol?
     private let storage: StorageServiceProtocol?
+    @Published var blur: CGFloat = 0
     @Published var isLoadingViewPresented = true
     @Published var deleteStatusState = DeleteStatus.notTapped
     @Published var car: Car?
@@ -144,6 +145,7 @@ class FullCarDescriptionViewModel: ObservableObject {
     func deleteCar() {
         guard let car = car else { return }
              
+        blur = 10
         deleteStatusState = .started
         
         Task {
@@ -153,6 +155,7 @@ class FullCarDescriptionViewModel: ObservableObject {
                 await MainActor.run {
                     deleteStatusState = .successful
                     coordinator?.back()
+                    coordinator?.showTabBar()
                 }
             } catch {
                 print("Delete error: \(error.localizedDescription)")
