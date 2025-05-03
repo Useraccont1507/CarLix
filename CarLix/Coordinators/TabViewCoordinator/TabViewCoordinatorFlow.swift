@@ -22,19 +22,18 @@ struct TabViewCoordinatorFlow: View {
     
     var body: some View {
         ZStack {
-            TopBar(coordinator: coordinator)
-            
-            switch coordinator.selection {
-            case .cars:
-                carsCoordinator.start()
-            case .home:
-                EmptyView()
-            case .fuels:
-                fuelsCoordinator.start()
-            case .services:
-                servicesCoordinator.start()
+            VStack {
+                switch coordinator.selection {
+                case .cars:
+                    carsCoordinator.start()
+                case .home:
+                    EmptyView()
+                case .fuels:
+                    fuelsCoordinator.start()
+                case .services:
+                    servicesCoordinator.start()
+                }
             }
-            
         }
         .overlay {
             if coordinator.isTabBarPresented {
@@ -52,23 +51,6 @@ struct TabViewCoordinatorFlow: View {
 
 #Preview {
     TabViewCoordinatorFlow(storageService: nil, tabViewCoordinator: TabViewCoordinator(appCoordinator: AppCoordinator()))
-}
-
-struct TopBar: View {
-    @ObservedObject var coordinator: TabViewCoordinator
-    
-    var body: some View {
-        VStack {
-            HStack {
-                Spacer()
-                
-                
-            }
-            .padding()
-            
-            Spacer()
-        }
-    }
 }
 
 struct CustomBar: View {
@@ -107,11 +89,8 @@ struct CustomBar: View {
                 .padding(.horizontal)
             }
             .frame(maxWidth: .infinity)
-            .background(
-                RoundedRectangle(cornerRadius: 100)
-                    .fill(.black.opacity(0.1))
-                    .shadow(radius: 20)
-            )
+            .background(.ultraThinMaterial)
+            .cornerRadius(100)
             .padding(.horizontal)
         }
     }

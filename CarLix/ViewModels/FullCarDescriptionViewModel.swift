@@ -7,10 +7,19 @@
 
 import SwiftUI
 
+enum DeleteStatus {
+    case notTapped
+    case notStarted
+    case started
+    case error
+    case successful
+}
+
 class FullCarDescriptionViewModel: ObservableObject {
     weak private var coordinator: CarsCoordinatorProtocol?
     private let storage: StorageServiceProtocol?
     @Published var isLoadingViewPresented = true
+    @Published var deleteStatusState = DeleteStatus.notTapped
     @Published var car: Car?
     
     init(coordinator: CarsCoordinatorProtocol?, storage: StorageServiceProtocol?, car: Car?) {
@@ -44,6 +53,7 @@ class FullCarDescriptionViewModel: ObservableObject {
     }
     
     func back() {
+        coordinator?.showTabBar()
         coordinator?.back()
     }
     
@@ -103,6 +113,8 @@ class FullCarDescriptionViewModel: ObservableObject {
     
     func deleteFuelHistory() {
         guard let car = car else { return }
+        
+        
         Task {
             do {
                 await MainActor.run {
@@ -118,6 +130,35 @@ class FullCarDescriptionViewModel: ObservableObject {
                 print("Error while deleting fuels: \(error.localizedDescription)")
                 await MainActor.run {
                     isLoadingViewPresented = false
+                }
+            }
+        }
+    }
+    
+    func moveToEdit() {
+        guard let car = car else { return }
+        
+        coordinator?.pushToEdit(carToEdit: car)
+    }
+    
+    func deleteCar() {
+        guard let car = car else { return }
+             
+        deleteStatusState = .started
+        
+        Task {
+            do {
+                try await storage?.deleteCar(car: car)
+                
+                await MainActor.run {
+                    deleteStatusState = .successful
+                    coordinator?.back()
+                }
+            } catch {
+                print("Delete error: \(error.localizedDescription)")
+                
+                await MainActor.run {
+                    deleteStatusState = .error
                 }
             }
         }

@@ -26,19 +26,25 @@ struct FullCarDescriptionView: View {
                 DescriptionScrollView(viewModel: viewModel)
             }
             .overlay {
-                ZStack {
-                    if viewModel.isLoadingViewPresented {
-                        ZStack {
-                            Color.black.opacity(0.5)
-                                .ignoresSafeArea()
-                            
-                            LoadingView()
-                                .transition(.scale)
-                        }
-                    }
+                switch viewModel.deleteStatusState {
+                case .notTapped:
+                    EmptyView()
+                case .notStarted:
+                    DeleteAlertView(viewModel: viewModel)
+                        .transition(.scale)
+                case .started:
+                    LoadingView()
+                        .transition(.scale)
+                case .successful:
+                    DeleteCarsSuccessView(viewModel: viewModel)
+                        .transition(.scale)
+                case .error:
+                    DeleteCarsErrorView(viewModel: viewModel)
+                        .transition(.scale)
                 }
             }
         }
+        .animation(.smooth(duration: 0.5, extraBounce: 0.2), value: viewModel.deleteStatusState)
         .toolbar(.hidden, for: .navigationBar)
         .onAppear {
             viewModel.loadFuelsAndServices()
@@ -99,47 +105,56 @@ struct DescriptionScrollView: View {
                         TotalCostsView(viewModel: viewModel)
                     }
                     
+                    if let car = viewModel.car {
+                        
+                        FullDescription(car: car)
+                        
+                    }
+                    
                     FuelsView(viewModel: viewModel, car: car)
                     ServicesView(viewModel: viewModel, car: car)
                 }
                 
-                Button {
-                    viewModel.deleteFuelHistory()
-                } label: {
-                    HStack {
-                        Image(systemName: "trash")
-                            .foregroundStyle(.white)
-                        Text("Видалити пальне")
-                            .font(.callout)
-                            .bold()
-                            .foregroundStyle(.white)
+                HStack(spacing: 16) {
+                    Button {
+                        viewModel.deleteStatusState = .notStarted
+                    } label: {
+                        HStack {
+                            Image(systemName: "trash")
+                                .foregroundStyle(.white)
+                            Text("Видалити авто")
+                                .font(.callout)
+                                .bold()
+                                .foregroundStyle(.white)
+                        }
                     }
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 30)
+                            .foregroundStyle(.red)
+                    )
+                    
+                    Button {
+                        viewModel.moveToEdit()
+                    } label: {
+                        HStack {
+                            Image(systemName: "pencil")
+                                .foregroundStyle(.white)
+                            Text("Редагувати")
+                                .font(.callout)
+                                .bold()
+                                .foregroundStyle(.white)
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 30)
+                            .foregroundStyle(.orange)
+                    )
                 }
                 .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 30)
-                        .foregroundStyle(.red)
-                )
-                .frame(width: 220)
-                
-                Button {
-                    viewModel.deleteServiceHistory()
-                } label: {
-                    HStack {
-                        Image(systemName: "trash")
-                            .foregroundStyle(.white)
-                        Text("Видалити сервіси")
-                            .font(.callout)
-                            .bold()
-                            .foregroundStyle(.white)
-                    }
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 30)
-                        .foregroundStyle(.red)
-                )
-                .frame(width: 220)
             }
         }
         .scrollIndicators(.hidden)
@@ -148,7 +163,7 @@ struct DescriptionScrollView: View {
 
 struct TotalCostsView: View {
     @ObservedObject var viewModel: FullCarDescriptionViewModel
-
+    
     var body: some View {
         VStack(spacing: 16) {
             HStack {
@@ -210,6 +225,22 @@ struct FuelsView: View {
                     .padding([.leading, .top])
                 
                 Spacer()
+                
+                Button {
+                    viewModel.deleteFuelHistory()
+                } label: {
+                    Text("Видалити усе")
+                        .font(.footnote)
+                        .bold()
+                        .foregroundStyle(.white)
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 8)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(.white.opacity(0.1))
+                )
+                .padding([.trailing, .top])
             }
             
             if !car.fuels.isEmpty {
@@ -222,9 +253,9 @@ struct FuelsView: View {
                     .frame(height: 1)
                     .frame(maxWidth: .infinity)
                 
-                    Text("Не було додано жодної заправки")
-                        .foregroundStyle(.white)
-                        .padding()
+                Text("Не було додано жодної заправки")
+                    .foregroundStyle(.white)
+                    .padding()
             }
         }
         .background(
@@ -323,6 +354,22 @@ struct ServicesView: View {
                     .padding([.leading, .top])
                 
                 Spacer()
+                
+                Button {
+                    viewModel.deleteServiceHistory()
+                } label: {
+                    Text("Видалити усе")
+                        .font(.footnote)
+                        .bold()
+                        .foregroundStyle(.white)
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 8)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(.white.opacity(0.1))
+                )
+                .padding([.trailing, .top])
             }
             
             if !car.services.isEmpty {
@@ -336,9 +383,9 @@ struct ServicesView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.horizontal)
                 
-                    Text("Не було додано жодного запису")
-                        .foregroundStyle(.white)
-                        .padding()
+                Text("Не було додано жодного запису")
+                    .foregroundStyle(.white)
+                    .padding()
             }
         }
         .background(
@@ -438,5 +485,203 @@ struct ServiceRow: View {
         dateFormatter.dateFormat = "dd.MM.yyyy"
         
         return dateFormatter.string(from: date)
+    }
+}
+
+struct FullDescription: View {
+    var car: Car
+    
+    var body: some View {
+        VStack {
+            if let image = car.image {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: .infinity)
+                    .clipShape(RoundedRectangle(cornerRadius: 30))
+                    .padding(.top, 4)
+            } else {
+                Image("DefaultCar")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: .infinity)
+                    .clipShape(RoundedRectangle(cornerRadius: 30))
+                    .padding(.top, 4)
+            }
+            
+            Rectangle()
+                .frame(maxWidth: .infinity)
+                .frame(height: 1)
+                .foregroundStyle(.gray)
+            
+            VStack(spacing: 16) {
+                
+                InfoRow(title: "Тип кузова", value: car.type.rawValue)
+                
+                
+                InfoRow(title: "Двигун", value: car.engineName)
+                
+                InfoRow(title: "Пробіг", value: "\(car.carMileage)" + " km")
+                
+                InfoRow(title: "Паливо", value: car.fuel.rawValue)
+                
+                InfoRow(title: "Привід", value: car.typeOfDrive.rawValue)
+                
+                
+                InfoRow(title: "Тип трансімісії", value: car.typeOfTransmission.rawValue)
+                
+                InfoRow(title: "Рік", value: "\(car.year)")
+                
+                if !car.vinCode.isEmpty {
+                    InfoRow(title: "VIN", value: car.vinCode)
+                    
+                }
+            }
+            .padding()
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 30)
+                .fill(.black.opacity(0.1))
+        )
+        .padding()
+    }
+}
+
+
+struct InfoRow: View {
+    let title: String
+    let value: String
+    
+    var body: some View {
+        HStack {
+            Text(title)
+                .font(.system(size: 18, weight: .regular))
+                .foregroundStyle(.white)
+            
+            Spacer()
+            
+            Text(value)
+                .font(.system(size: 18, weight: .regular))
+                .foregroundStyle(.white)
+        }
+    }
+}
+
+struct DeleteAlertView: View {
+    @ObservedObject var viewModel: FullCarDescriptionViewModel
+    
+    var body: some View {
+        VStack {
+            VStack {
+                Text("Ви точно бажаєте видалити дані?")
+                Text("Усі записи будуть втрачені")
+            }
+            .fontWeight(.semibold)
+            .foregroundStyle(.white)
+            .padding(.bottom)
+            
+            HStack(spacing: 16) {
+                Button {
+                    print("Action")
+                    viewModel.deleteStatusState = .notTapped
+                } label: {
+                    Text("Скасувати")
+                        .font(.callout)
+                        .bold()
+                        .foregroundStyle(.white)
+                }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 30)
+                        .fill(.white.opacity(0.1))
+                )
+                
+                Button {
+                    viewModel.deleteCar()
+                } label: {
+                    Text("Видалити")
+                        .font(.callout)
+                        .bold()
+                        .foregroundStyle(.white)
+                }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 30)
+                        .fill(.red)
+                )
+            }
+        }
+        .padding([.top, .leading, .trailing], 32)
+        .padding(.bottom)
+        .background(
+            RoundedRectangle(cornerRadius: 30)
+                .foregroundStyle(.white.opacity(0.1))
+        )
+    }
+}
+
+struct DeleteCarsSuccessView: View {
+    @ObservedObject var viewModel: FullCarDescriptionViewModel
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            Text("Дані були успішно видалені")
+                .foregroundStyle(.white)
+                .bold()
+            
+            Button {
+                viewModel.deleteStatusState = .notTapped
+            } label: {
+                Text("ОК")
+                    .bold()
+                    .foregroundStyle(.white)
+            }
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 30)
+                    .fill(.white.opacity(0.1))
+            )
+        }
+        .padding([.top, .horizontal], 32)
+        .padding(.bottom)
+        .background(
+            RoundedRectangle(cornerRadius: 30)
+                .fill(.white.opacity(0.1))
+        )
+    }
+}
+
+
+struct DeleteCarsErrorView: View {
+    @ObservedObject var viewModel: FullCarDescriptionViewModel
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            Text("Упс. Щось пішло не так.\nСпробуйте пізніше")
+                .multilineTextAlignment(.center)
+                .bold()
+                .foregroundStyle(.white)
+            
+            Button {
+                viewModel.deleteStatusState = .notTapped
+            } label: {
+                Text("ОК")
+                    .bold()
+                    .foregroundStyle(.white)
+                    .bold()
+            }
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 30)
+                    .fill(.white.opacity(0.1))
+            )
+        }
+        .padding([.top, .horizontal], 32)
+        .padding(.bottom)
+        .background(
+            RoundedRectangle(cornerRadius: 30)
+                .fill(.white.opacity(0.1))
+        )
     }
 }

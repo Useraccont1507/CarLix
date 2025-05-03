@@ -7,24 +7,11 @@
 
 import Foundation
 
-enum DeleteStatus {
-    case notTapped
-    case notStarted
-    case started
-    case error
-    case successful
-}
-
 class CarsViewModel: ObservableObject {
     private weak var carsCoordinator: CarsCoordinatorProtocol?
     private let storageService: StorageServiceProtocol?
     
-    @Published var blur: CGFloat = 0
-    @Published var blurForFullDescription: CGFloat = 0
     @Published var isLoadingViewPresented = false
-    @Published var isFullDescriprionPresented = false
-    @Published var deleteStatusState = DeleteStatus.notTapped
-    @Published var carToPresentFullDescription: Car?
     @Published var cars: [Car] = []
     
     init(storageService: StorageServiceProtocol? = nil, carsCoordinator: CarsCoordinatorProtocol? = nil) {
@@ -33,36 +20,13 @@ class CarsViewModel: ObservableObject {
     }
     
     func presentFullDescription(for car: Car) {
-        getCar(for: car)
+        carsCoordinator?.pushToStats(car: car)
         carsCoordinator?.hideTabBar()
-        isFullDescriprionPresented = true
-    }
-    
-    func hideFullDescription() {
-        carsCoordinator?.showTabBar()
-        isFullDescriprionPresented = false
-    }
-    
-    func moveToEdit() {
-        guard let car = carToPresentFullDescription else {
-            print("smth went wrong with move to edit")
-            return
-        }
-        carsCoordinator?.pushToEdit(carToEdit: car)
     }
     
     func moveToAdd() {
         carsCoordinator?.hideTabBar()
         carsCoordinator?.pushToAdd()
-    }
-    
-    func moveToStats() {
-        guard let car = carToPresentFullDescription else {
-            print("smth went wrong with move to stats")
-            return
-        }
-        
-        carsCoordinator?.pushToStats(car: car)
     }
     
     func loadCars() {
@@ -83,35 +47,6 @@ class CarsViewModel: ObservableObject {
                 }
             } catch {
                 print("Error while loading cars: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    private func getCar(for car: Car) {
-        if let car = cars.last(where: { $0.id == car.id }) {
-            carToPresentFullDescription = car
-        }
-    }
-    
-    func deleteCar() {
-        deleteStatusState = .started
-        
-        Task {
-            do {
-                try await storageService?.deleteCar(car: carToPresentFullDescription!)
-                
-                await MainActor.run {
-                    deleteStatusState = .successful
-                    isFullDescriprionPresented = false
-                    carsCoordinator?.hideTabBar()
-                    loadCars()
-                }
-            } catch {
-                print("Delete error: \(error.localizedDescription)")
-                
-                await MainActor.run {
-                    deleteStatusState = .error
-                }
             }
         }
     }
