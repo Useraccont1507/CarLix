@@ -43,7 +43,7 @@ struct AddFuelServiceView: View {
         .onAppear {
             viewModel.loadCars()
         }
-        
+        .animation(.easeInOut, value: viewModel.blur)
     }
 }
 

@@ -29,12 +29,6 @@ struct FuelsServicesCoordinatorFlow: View {
         }
         .overlay {
             ZStack {
-                if coordinator.loadingState != .none {
-                    Color.black.opacity(0.5)
-                        .ignoresSafeArea()
-                        .transition(.opacity)
-                }
-                
                 switch coordinator.loadingState {
                 case .none:
                     EmptyView()

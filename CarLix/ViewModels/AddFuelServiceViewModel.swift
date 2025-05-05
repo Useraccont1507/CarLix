@@ -33,11 +33,15 @@ final class AddFuelServiceViewModel: ObservableObject {
     
     @Published var isImagePickerPresented = false
     
-    init(blur: CGFloat, coordinator: FuelsServicesCoordinatorProtocol?, storage: StorageServiceProtocol?, isFuelAdded: Bool) {
+    init(blur: CGFloat, coordinator: FuelsServicesCoordinator?, storage: StorageServiceProtocol?, isFuelAdded: Bool) {
         self.blur = blur
         self.coordinator = coordinator
         self.storage = storage
         self.isFuelAdded = isFuelAdded
+        if let coordinator = coordinator {
+            coordinator.$blur
+                .assign(to: &$blur)
+        }
     }
     
     func loadCars() {
@@ -73,6 +77,8 @@ final class AddFuelServiceViewModel: ObservableObject {
                let car = cars.first(where: { $0.id == carID }) {
                 let carFuel = CarFuel(carID: carID, liters: litersInt, fuelType: type, currency: .UAH, pricePerLiter: Float(pricePerLiter), currentMileage: mileageInt, stationName: stationName, stationAddress: stationAdress, documents: documents, date: .now)
                 
+                coordinator?.showLoadingView()
+                
                 Task {
                     do {
                         try await storage?.addFuel(fuels: carFuel, for: car)
@@ -101,6 +107,8 @@ final class AddFuelServiceViewModel: ObservableObject {
                let mileageInt = Int(currentMileage),
                let car = cars.first(where: { $0.id == carID }) {
                 let carService = CarService(id: UUID().uuidString, carID: carID, workDescription: workDescription, detailedDescription: detailedWorkDescription, currentMileage: mileageInt, currency: currency, price: priceFloat, stationName: stationName, stationAddress: stationAdress, documents: documents, date: .now, isNotified: isNotified, notificationDate: isNotified ? notificationDate : nil)
+                
+                coordinator?.showLoadingView()
                 
                 Task {
                     do {

@@ -48,6 +48,7 @@ final class FuelsServicesCoordinator: FuelsServicesCoordinatorProtocol, Observab
     }
     
     func showLoadingView() {
+        blur = 10
         loadingState = .show
     }
     func hideView() {

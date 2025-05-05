@@ -16,11 +16,15 @@ final class AllFuelsServicesViewModel: ObservableObject {
     @Published var fuels: [CarFuel] = []
     @Published var services: [CarService] = []
     
-    init(blur: CGFloat, isFuelPresented: Bool, coordiantor: FuelsServicesCoordinatorProtocol?, storage: StorageServiceProtocol?) {
+    init(blur: CGFloat, isFuelPresented: Bool, coordiantor: FuelsServicesCoordinator?, storage: StorageServiceProtocol?) {
         self.blur = blur
         self.isFuelPresented = isFuelPresented
         self.coordinator = coordiantor
         self.storage = storage
+        if let coordinator = coordiantor {
+            coordinator.$blur
+                .assign(to: &$blur)
+        }
     }
     
     func loadData() {
@@ -63,6 +67,7 @@ final class AllFuelsServicesViewModel: ObservableObject {
                             let services = try await storage.loadServices(for: car)
                             for service in services {
                                 await MainActor.run {
+                                    self.fuels = []
                                     self.services.append(service)
                                 }
                             }

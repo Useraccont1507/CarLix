@@ -50,6 +50,8 @@ class FullCarDescriptionViewModel: ObservableObject {
                     print("loading stats error: \(error.localizedDescription)")
                 }
             }
+        } else {
+            print("car nil")
         }
     }
     

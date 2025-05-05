@@ -39,6 +39,7 @@ struct AllFuelsServicesView: View {
         .onAppear {
             viewModel.loadData()
         }
+        .animation(.easeInOut, value: viewModel.blur)
     }
 }
 
@@ -92,31 +93,41 @@ struct FuelsListView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     let filtered = viewModel.fuels.filter({$0.carID == car.id})
                     
-                    ForEach(filtered, id: \.id) { fuel in
-                        VStack {
-                            FuelRow(fuel: fuel)
-                            
-                            HStack {
-                                Spacer()
+                    if !filtered.isEmpty {
+                        ForEach(filtered, id: \.id) { fuel in
+                            VStack {
+                                FuelRow(fuel: fuel)
                                 
-                                Button("Видалити") {
-                                    viewModel.deleteFuel(fuel: fuel)
+                                HStack {
+                                    Spacer()
+                                    
+                                    Button("Видалити") {
+                                        viewModel.deleteFuel(fuel: fuel)
+                                    }
+                                    .buttonStyle(.borderless)
+                                    .foregroundStyle(.white)
+                                    .fontWeight(.semibold)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 8)
+                                    .background (
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .fill(.white.opacity(0.1))
+                                    )
+                                    .padding([.trailing, .bottom])
                                 }
-                                .foregroundStyle(.white)
-                                .fontWeight(.semibold)
-                                .padding(.horizontal)
-                                .padding(.vertical, 8)
-                                .background (
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .fill(.white.opacity(0.1))
-                                )
-                                .padding([.trailing, .bottom])
                             }
+                            .background(
+                                RoundedRectangle(cornerRadius: 30)
+                                    .fill(.black.opacity(0.1))
+                            )
                         }
-                        .background(
-                            RoundedRectangle(cornerRadius: 30)
-                                .fill(.black.opacity(0.1))
-                        )
+                    } else {
+                        Spacer()
+                        
+                        Text("Ще не було додано жодного запису")
+                            .foregroundStyle(.white)
+                        
+                        Spacer()
                     }
                 }
                 .listRowSeparator(.hidden)
@@ -140,31 +151,40 @@ struct ServicesListView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     let filtered = viewModel.services.filter({$0.carID == car.id})
                     
-                    ForEach(filtered, id: \.id) { service in
-                        VStack {
-                            ServiceRow(service: service)
-                            
-                            HStack {
-                                Spacer()
+                    if !filtered.isEmpty {
+                        ForEach(filtered, id: \.id) { service in
+                            VStack {
+                                ServiceRow(service: service)
                                 
-                                Button("Видалити") {
-                                    viewModel.deleteService(service: service)
+                                HStack {
+                                    Spacer()
+                                    
+                                    Button("Видалити") {
+                                        viewModel.deleteService(service: service)
+                                    }
+                                    .foregroundStyle(.white)
+                                    .fontWeight(.semibold)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 8)
+                                    .background (
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .fill(.white.opacity(0.1))
+                                    )
+                                    .padding([.trailing, .bottom])
                                 }
-                                .foregroundStyle(.white)
-                                .fontWeight(.semibold)
-                                .padding(.horizontal)
-                                .padding(.vertical, 8)
-                                .background (
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .fill(.white.opacity(0.1))
-                                )
-                                .padding([.trailing, .bottom])
                             }
+                            .background(
+                                RoundedRectangle(cornerRadius: 30)
+                                    .fill(.black.opacity(0.1))
+                            )
                         }
-                        .background(
-                            RoundedRectangle(cornerRadius: 30)
-                                .fill(.black.opacity(0.1))
-                        )
+                    } else {
+                        Spacer()
+                        
+                        Text("Ще не було додано жодного запису")
+                            .foregroundStyle(.white)
+                        
+                        Spacer()
                     }
                 }
                 .listRowSeparator(.hidden)

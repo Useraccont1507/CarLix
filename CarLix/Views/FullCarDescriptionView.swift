@@ -322,7 +322,7 @@ struct FuelRow: View {
             HStack {
                 if !fuel.stationName.isEmpty,
                    !fuel.stationAddress.isEmpty {
-                    Text(String(fuel.stationName) + String(fuel.stationAddress))
+                    Text(String(fuel.stationName) + " " + String(fuel.stationAddress))
                         .font(.body)
                         .fontWeight(.semibold)
                         .foregroundStyle(.white)

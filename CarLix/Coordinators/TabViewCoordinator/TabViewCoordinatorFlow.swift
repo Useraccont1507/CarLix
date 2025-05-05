@@ -12,12 +12,14 @@ struct TabViewCoordinatorFlow: View {
     @StateObject var carsCoordinator: CarsCoordinator
     @StateObject var fuelsCoordinator: FuelsServicesCoordinator
     @StateObject var servicesCoordinator: FuelsServicesCoordinator
+    @StateObject var homeCoordinator: HomeCoordinator
     
     init(storageService: StorageServiceProtocol?, tabViewCoordinator: TabViewCoordinator) {
         self.coordinator = tabViewCoordinator
         _carsCoordinator = StateObject(wrappedValue: CarsCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator))
         _fuelsCoordinator = StateObject(wrappedValue: FuelsServicesCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator, isFuelPresent: true))
         _servicesCoordinator = StateObject(wrappedValue: FuelsServicesCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator, isFuelPresent: false))
+        _homeCoordinator = StateObject(wrappedValue: HomeCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator))
     }
     
     var body: some View {
@@ -27,7 +29,7 @@ struct TabViewCoordinatorFlow: View {
                 case .cars:
                     carsCoordinator.start()
                 case .home:
-                    EmptyView()
+                    homeCoordinator.start()
                 case .fuels:
                     fuelsCoordinator.start()
                 case .services:
