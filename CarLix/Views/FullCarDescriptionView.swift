@@ -344,6 +344,7 @@ struct FuelRow: View {
                     .resizable()
                     .frame(maxWidth: .infinity)
                     .scaledToFit()
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
                     .padding(.bottom)
             }
         }
@@ -495,6 +496,7 @@ struct ServiceRow: View {
                     .resizable()
                     .frame(maxWidth: .infinity)
                     .scaledToFit()
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
                     .padding(.bottom)
             }
         }

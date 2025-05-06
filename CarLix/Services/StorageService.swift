@@ -29,6 +29,7 @@ final class StorageService: StorageServiceProtocol {
     private let keychainService: KeychainServiceProtocol
     private let db = Firestore.firestore()
     private let storage = Storage.storage()
+    private let cache = NSCache<NSString, UIImage>()
     
     init(keychainService: KeychainServiceProtocol) {
         self.keychainService = keychainService
@@ -128,7 +129,7 @@ final class StorageService: StorageServiceProtocol {
         }
         
         if oldCar.carMileage != car.carMileage {
-            updatedData["fuel"] = String(car.carMileage)
+            updatedData["carMileage"] = String(car.carMileage)
         }
         
         if oldCar.typeOfTransmission != car.typeOfTransmission {
@@ -151,12 +152,16 @@ final class StorageService: StorageServiceProtocol {
         
         let carReference = db.collection("users").document(id).collection("cars").document(car.id)
         
-        try await carReference.delete()
-        
         if let imageUrlString = try await carReference.getDocument().data()?["imageURL"] as? String,
            let url = URL(string: imageUrlString) {
             try await storage.reference(for: url).delete()
         }
+
+        try await deleteFuels(for: car)
+        
+        try await deleteServices(for: car)
+        
+        try await carReference.delete()
     }
     
     func deleteFuels(for car: Car) async throws {
@@ -181,12 +186,12 @@ final class StorageService: StorageServiceProtocol {
         let id = try getUserId()
         
         await withThrowingTaskGroup(of: Void.self) { group in
-            for fuel in car.fuels {
+            for service in car.services {
                 group.addTask {
-                    let fuelReference = self.db.collection("users").document(id).collection("services").document(fuel.id)
-                    try await fuelReference.delete()
+                    let serviceReference = self.db.collection("users").document(id).collection("services").document(service.id)
+                    try await serviceReference.delete()
                     
-                    if let imageUrlString = try await fuelReference.getDocument().data()?["documentsURL"] as? String,
+                    if let imageUrlString = try await serviceReference.getDocument().data()?["documentsURL"] as? String,
                        let url = URL(string: imageUrlString) {
                         try await self.storage.reference(for: url).delete()
                     }
@@ -211,7 +216,7 @@ final class StorageService: StorageServiceProtocol {
         
         try await serviceReference.delete()
         
-        if let imageUrlString = try await serviceReference.getDocument().data()?["documents"] as? String,
+        if let imageUrlString = try await serviceReference.getDocument().data()?["documentsURL"] as? String,
            let url = URL(string: imageUrlString) {
             try await storage.reference(for: url).delete()
         }
@@ -468,7 +473,11 @@ final class StorageService: StorageServiceProtocol {
         
         let _ = try await imageRef.putDataAsync(imageData, metadata: metaData)
         
-        return try await imageRef.downloadURL().absoluteString
+        let url = try await imageRef.downloadURL().absoluteString
+        
+        CacheManager.shared.insertImage(uiImage, forKey: url)
+        
+        return url
     }
     
     private func saveDocumentAndGetURL(document: UIImage?, carId: String, fuelID: String?, serviceID: String?) async throws -> String {
@@ -488,21 +497,31 @@ final class StorageService: StorageServiceProtocol {
         metaData.contentType = "image/jpeg"
         
         let _ = try await imageRef.putDataAsync(imageData, metadata: metaData)
-        return try await imageRef.downloadURL().absoluteString
+        
+        let url = try await imageRef.downloadURL().absoluteString
+        
+        CacheManager.shared.insertImage(document, forKey: url)
+        
+        return url
     }
     
     private func getImageFromURL(urlString: String) async throws -> UIImage? {
         guard !urlString.isEmpty else { return nil }
         
-        let ref = storage.reference(forURL: urlString)
-        
-        let data = try await ref.data(maxSize: 5 * 1024 * 1024)
-        
-        guard let image = UIImage(data: data) else {
-            print("Can not get image from data")
-            return nil
+        if let image = CacheManager.shared.image(forKey: urlString) {
+            CacheManager.shared.insertImage(image, forKey: urlString)
+            return image
+        } else {
+            let ref = storage.reference(forURL: urlString)
+            
+            let data = try await ref.data(maxSize: 5 * 1024 * 1024)
+            
+            guard let image = UIImage(data: data) else {
+                print("Can not get image from data")
+                return nil
+            }
+            return image
         }
-        return image
     }
     
     private func getUserId() throws -> String {

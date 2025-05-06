@@ -15,7 +15,7 @@ struct FuelsServicesCoordinatorFlow: View {
     init(coordinator: FuelsServicesCoordinator) {
         self.coordinator = coordinator
         _viewModel = StateObject(wrappedValue: AllFuelsServicesViewModel(blur: coordinator.blur, isFuelPresented: coordinator.isFuelPresent, coordiantor: coordinator, storage: coordinator.storageService))
-        _addViewModel = StateObject(wrappedValue: AddFuelServiceViewModel(blur: coordinator.blur, coordinator: coordinator, storage: coordinator.storageService, isFuelAdded: coordinator.isFuelPresent))
+        _addViewModel = StateObject(wrappedValue: AddFuelServiceViewModel(blur: coordinator.blur, coordinator: coordinator, storage: coordinator.storageService, notificationService: coordinator.notificationService, isFuelAdded: coordinator.isFuelPresent))
     }
     
     var body: some View {
@@ -51,7 +51,7 @@ struct FuelsServicesCoordinatorFlow: View {
 }
 
 #Preview {
-    FuelsServicesCoordinatorFlow(coordinator: FuelsServicesCoordinator(storageService: nil, tabViewCoordinator: nil, isFuelPresent: true))
+    FuelsServicesCoordinatorFlow(coordinator: FuelsServicesCoordinator(storageService: nil, tabViewCoordinator: nil, notificationService: nil, isFuelPresent: true))
 }
 
 struct SuccessView: View {

@@ -48,7 +48,7 @@ struct AddFuelServiceView: View {
 }
 
 #Preview {
-    AddFuelServiceView(viewModel: AddFuelServiceViewModel(blur: 0, coordinator: nil, storage: nil, isFuelAdded: false))
+    AddFuelServiceView(viewModel: AddFuelServiceViewModel(blur: 0, coordinator: nil, storage: nil, notificationService: nil, isFuelAdded: false))
 }
 
 struct AddFuelHeaderBar: View {
