@@ -10,6 +10,7 @@ import UIKit
 final class AddFuelServiceViewModel: ObservableObject {
     private weak var coordinator: FuelsServicesCoordinatorProtocol?
     private let storage: StorageServiceProtocol?
+    private let notificationService: NotificationServiceProtocol?
     
     @Published var blur: CGFloat
     
@@ -33,10 +34,11 @@ final class AddFuelServiceViewModel: ObservableObject {
     
     @Published var isImagePickerPresented = false
     
-    init(blur: CGFloat, coordinator: FuelsServicesCoordinator?, storage: StorageServiceProtocol?, isFuelAdded: Bool) {
+    init(blur: CGFloat, coordinator: FuelsServicesCoordinator?, storage: StorageServiceProtocol?, notificationService: NotificationServiceProtocol? ,isFuelAdded: Bool) {
         self.blur = blur
         self.coordinator = coordinator
         self.storage = storage
+        self.notificationService = notificationService
         self.isFuelAdded = isFuelAdded
         if let coordinator = coordinator {
             coordinator.$blur
@@ -115,6 +117,10 @@ final class AddFuelServiceViewModel: ObservableObject {
                         try await storage?.addService(service: carService, for: car)
                         
                         await MainActor.run {
+                            if isNotified {
+                                notificationService?.setNotification(carName: car.name, toDo: workDescription, date: notificationDate)
+                            }
+                            
                             coordinator?.showAddSuccessView()
                             self.deleteFields()
                             self.close()

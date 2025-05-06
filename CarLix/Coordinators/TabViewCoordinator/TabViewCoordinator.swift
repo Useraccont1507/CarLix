@@ -21,14 +21,16 @@ protocol TabViewCoordinatorProtocol: CoordinatorProtocol {
 class TabViewCoordinator: ObservableObject, TabViewCoordinatorProtocol {
     private weak var appCoordinator: AppCoordinatorProtocol?
     let storageService: StorageServiceProtocol?
+    let notificationService: NotificationServiceProtocol?
     
     @Published var isTabBarPresented = true
     @Published var isUserProfilePresented = false
     @Published var selection: Selection = .cars
     
-    init(appCoordinator: AppCoordinatorProtocol? = nil ,storageService: StorageServiceProtocol? = nil) {
+    init(appCoordinator: AppCoordinatorProtocol? = nil ,storageService: StorageServiceProtocol? = nil, notificationService: NotificationServiceProtocol?) {
         self.appCoordinator = appCoordinator
         self.storageService = storageService
+        self.notificationService = notificationService
     }
     
     func start() -> AnyView {

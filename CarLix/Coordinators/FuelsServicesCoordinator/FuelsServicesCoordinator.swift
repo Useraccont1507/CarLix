@@ -32,14 +32,16 @@ enum LoadingState {
 final class FuelsServicesCoordinator: FuelsServicesCoordinatorProtocol, ObservableObject {
     private weak var tabViewCoordinator: TabViewCoordinatorProtocol?
     let storageService: StorageServiceProtocol?
+    let notificationService: NotificationServiceProtocol?
     @Published var blur: CGFloat = 0
     @Published var loadingState: LoadingState = .none
     @Published var isFuelPresent: Bool
     @Published var navigationPath = NavigationPath()
     
-    init(storageService: StorageServiceProtocol?, tabViewCoordinator: TabViewCoordinatorProtocol?, isFuelPresent: Bool) {
+    init(storageService: StorageServiceProtocol?, tabViewCoordinator: TabViewCoordinatorProtocol?, notificationService: NotificationServiceProtocol?, isFuelPresent: Bool) {
         self.storageService = storageService
         self.tabViewCoordinator = tabViewCoordinator
+        self.notificationService = notificationService
         self.isFuelPresent = isFuelPresent
     }
     

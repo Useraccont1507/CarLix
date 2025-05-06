@@ -23,7 +23,7 @@ struct AppCoordinatorFlow: View {
             case .auth:  AuthCoordinator(appcoordinator: coordinator, authService: coordinator.authService, storageService: coordinator.storageService)
                     .start()
                     .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
-            case .main: TabViewCoordinator(appCoordinator: coordinator, storageService: coordinator.storageService)
+            case .main: TabViewCoordinator(appCoordinator: coordinator, storageService: coordinator.storageService, notificationService: coordinator.notificationService)
                     .start()
                     .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .move(edge: .bottom)))
                     .transition(.opacity)

@@ -17,8 +17,8 @@ struct TabViewCoordinatorFlow: View {
     init(storageService: StorageServiceProtocol?, tabViewCoordinator: TabViewCoordinator) {
         self.coordinator = tabViewCoordinator
         _carsCoordinator = StateObject(wrappedValue: CarsCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator))
-        _fuelsCoordinator = StateObject(wrappedValue: FuelsServicesCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator, isFuelPresent: true))
-        _servicesCoordinator = StateObject(wrappedValue: FuelsServicesCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator, isFuelPresent: false))
+        _fuelsCoordinator = StateObject(wrappedValue: FuelsServicesCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator, notificationService: coordinator.notificationService, isFuelPresent: true))
+        _servicesCoordinator = StateObject(wrappedValue: FuelsServicesCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator, notificationService: coordinator.notificationService, isFuelPresent: false))
         _homeCoordinator = StateObject(wrappedValue: HomeCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator))
     }
     
@@ -52,7 +52,7 @@ struct TabViewCoordinatorFlow: View {
 }
 
 #Preview {
-    TabViewCoordinatorFlow(storageService: nil, tabViewCoordinator: TabViewCoordinator(appCoordinator: AppCoordinator()))
+    TabViewCoordinatorFlow(storageService: nil, tabViewCoordinator: TabViewCoordinator(appCoordinator: AppCoordinator(), notificationService: nil))
 }
 
 struct CustomBar: View {
