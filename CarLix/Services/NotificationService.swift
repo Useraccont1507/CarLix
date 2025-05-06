@@ -7,9 +7,11 @@
 
 import Foundation
 import UserNotifications
+import UIKit
 
 protocol NotificationServiceProtocol {
     func makeRequest(completion: @escaping (Bool) -> Void)
+    func setNotification(carName: String, toDo: String, date: Date)
 }
 
 final class NotificationService: NotificationServiceProtocol {
@@ -34,6 +36,29 @@ final class NotificationService: NotificationServiceProtocol {
                 self.requestAuthorization(completion: completion)
             @unknown default:
                 print("Unknown notification authorization status")
+            }
+        }
+    }
+    
+    func setNotification(carName: String, toDo: String, date: Date) {
+        self.makeRequest { [weak self] isAllowed in
+            guard let self = self else { return }
+            
+            if isAllowed {
+                let content = UNMutableNotificationContent()
+                content.title = "Нагадування про \(carName)"
+                content.body = toDo
+                content.sound = .default
+                content.categoryIdentifier = "local"
+                content.badge = NSNumber(value: UIApplication.shared.applicationIconBadgeNumber + 1)
+                
+                let trigerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute , .second], from: date)
+                
+                let triger = UNCalendarNotificationTrigger(dateMatching: trigerDate, repeats: false)
+                
+                let request = UNNotificationRequest(identifier: "nil", content: content, trigger: triger)
+                    
+                self.center.add(request)
             }
         }
     }
