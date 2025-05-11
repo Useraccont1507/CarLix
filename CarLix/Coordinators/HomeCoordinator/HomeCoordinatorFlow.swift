@@ -10,10 +10,12 @@ import SwiftUI
 struct HomeCoordinatorFlow: View {
     @ObservedObject var coordinator: HomeCoordinator
     @StateObject var homeViewModel: HomeViewModel
+    @StateObject var profileViewModel: ProfileViewModel
     
     init(coordinator: HomeCoordinator) {
         self.coordinator = coordinator
         _homeViewModel = StateObject(wrappedValue: HomeViewModel(coordinator: coordinator, storageService: coordinator.storageService))
+        _profileViewModel = StateObject(wrappedValue: ProfileViewModel(homeCoordinator: coordinator, storageService: coordinator.storageService, authService: coordinator.authService))
         
     }
     
@@ -22,7 +24,7 @@ struct HomeCoordinatorFlow: View {
             HomeView(viewModel: homeViewModel)
                 .navigationDestination(for: HomePath.self) { path in
                     switch path {
-                    case .profile: EmptyView()
+                    case .profile: ProfileView(viewModel: profileViewModel)
                     }
                 }
         }

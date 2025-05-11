@@ -120,13 +120,13 @@ final class AddFuelServiceViewModel: ObservableObject {
                             if isNotified {
                                 notificationService?.setNotification(carName: car.name, toDo: workDescription, date: notificationDate)
                             }
-                            
+                            print("Sussess")
                             coordinator?.showAddSuccessView()
                             self.deleteFields()
                             self.close()
                         }
                     } catch {
-                        print("Error while adding car: \(error.localizedDescription)")
+                        print("Error while adding service: \(error.localizedDescription)")
                         
                         await MainActor.run {
                             coordinator?.showErrorView()

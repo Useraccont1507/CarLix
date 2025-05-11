@@ -13,25 +13,22 @@ protocol AuthServiceProtocol {
     func createUser(email: String, password: String) async throws
     func signIn(email: String, password: String) async throws
     func getIsUserEnterd() -> Bool
-    
+    func deleteUser() async throws
+    func getUserID() -> String
 }
 
 final class AuthService: AuthServiceProtocol {
-    private let keychainService: KeychainServiceProtocol
-    private let auth = Auth.auth()
     
-    init(keychainService: KeychainServiceProtocol) {
-        self.keychainService = keychainService
-    }
+    private let auth = Auth.auth()
     
     func createUser(email: String, password: String) async throws {
         try await auth.createUser(withEmail: email, password: password)
-        try await setUserID()
+       
     }
     
     func signIn(email: String, password: String) async throws {
         try await auth.signIn(withEmail: email, password: password)
-        try await setUserID()
+       
     }
     
     func getIsUserEnterd() -> Bool {
@@ -39,8 +36,13 @@ final class AuthService: AuthServiceProtocol {
         return true
     }
     
-    private func setUserID() async throws {
-        guard let id = auth.currentUser?.uid else { return }
-        try keychainService.setUserID(id: id)
+    func deleteUser() async throws {
+        guard let user = auth.currentUser else { return }
+        try await user.delete()
+    }
+    
+    func getUserID() -> String {
+        guard let uid = auth.currentUser?.uid else { return "" }
+        return uid
     }
 }

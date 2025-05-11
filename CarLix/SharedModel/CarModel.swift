@@ -57,6 +57,7 @@ struct Car: Identifiable, Hashable {
     var typeOfTransmission: TypeOfTransmission
     var typeOfDrive: TypeOfDrive
     var vinCode: String
+    var dateAdded = Date()
     
     var fuels: [CarFuel]
     var services: [CarService]

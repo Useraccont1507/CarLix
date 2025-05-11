@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 protocol CoordinatorProtocol: AnyObject {
     func start() -> AnyView

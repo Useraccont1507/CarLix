@@ -162,6 +162,7 @@ struct ServicesListView: View {
                                     Button("Видалити") {
                                         viewModel.deleteService(service: service)
                                     }
+                                    .buttonStyle(.borderless)
                                     .foregroundStyle(.white)
                                     .fontWeight(.semibold)
                                     .padding(.horizontal)

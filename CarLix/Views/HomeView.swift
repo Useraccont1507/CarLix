@@ -22,10 +22,11 @@ struct HomeView: View {
             
             VStack {
                 HeaderHomeBar(viewModel: viewModel)
+                    .blur(radius: viewModel.blur)
                 
                 ScrollView {
                     LazyVStack {
-                        DatePickerView(selectedDateType: $viewModel.selectedDateType)
+                        DatePickerView(viewModel: viewModel, selectedDateType: $viewModel.selectedDateType)
                         
                         TotalAllCarsCostsView(viewModel: viewModel)
                         
@@ -34,6 +35,7 @@ struct HomeView: View {
                         ExpenseFuelServiceChartView(viewModel: viewModel)
                     }
                 }
+                .blur(radius: viewModel.blur)
             }
             .onAppear {
                 viewModel.loadAllData()
@@ -78,6 +80,7 @@ struct HeaderHomeBar: View {
 }
 
 struct DatePickerView: View {
+    @ObservedObject var viewModel: HomeViewModel
     @Binding var selectedDateType: DateType
     
     var body: some View {
@@ -103,24 +106,25 @@ struct DatePickerView: View {
     }
     
     private func button(for type: DateType) -> some View {
-            Button {
-                selectedDateType = type
-            } label: {
-                Text(type.rawValue)
-                    .font(.system(size: 24, weight: .semibold))
-                    .foregroundStyle(selectedDateType == type ? .white : .white.opacity(0.5))
-                    .padding()
-                    .background(
-                        Group {
-                            if selectedDateType == type {
-                                RoundedRectangle(cornerRadius: 30)
-                                    .foregroundStyle(.white.opacity(0.1))
-                            }
+        Button {
+            selectedDateType = type
+            viewModel.fitlerData(with: type)
+        } label: {
+            Text(type.rawValue)
+                .font(.system(size: 24, weight: .semibold))
+                .foregroundStyle(selectedDateType == type ? .white : .white.opacity(0.5))
+                .padding()
+                .background(
+                    Group {
+                        if selectedDateType == type {
+                            RoundedRectangle(cornerRadius: 30)
+                                .foregroundStyle(.white.opacity(0.1))
                         }
-                            .transition(.identity)
-                    )
-            }
+                    }
+                        .transition(.identity)
+                )
         }
+    }
 }
 
 struct TotalAllCarsCostsView: View {
@@ -142,13 +146,13 @@ struct TotalAllCarsCostsView: View {
                 .padding(.bottom, 8)
             
             VStack(spacing: 16) {
-                ForEach(0..<3) { i in
+                ForEach(viewModel.cars, id: \.id) { car in
                     HStack {
-                        Text("Audi A4 B8 2013")
-                            
+                        Text(car.name)
+                        
                         Spacer()
                         
-                        Text("12 000")
+                        Text(String(Int(viewModel.calculateCarCost(car).rounded())))
                     }
                     .font(.title2)
                     .bold()
@@ -170,13 +174,9 @@ struct TotalAllCarsCostsView: View {
 struct ExpencesChartView: View {
     @ObservedObject var viewModel: HomeViewModel
     
-    let testData = [
-        (date: Date(), amount: 7, id: UUID().uuidString),
-        (date: Date().addingTimeInterval(-86400), amount: 5, id: UUID().uuidString),
-        (date: Date().addingTimeInterval(-2 * 86400), amount: 10, id: UUID().uuidString)
-    ]
-    
     var body: some View {
+        let chartData = viewModel.getAnalyticsDateAndCost()
+        
         VStack {
             HStack {
                 Text("Витрати")
@@ -190,10 +190,10 @@ struct ExpencesChartView: View {
                 .padding(.bottom, 8)
             
             Chart {
-                ForEach(testData, id: \.id) { data in
+                ForEach(chartData, id: \.id) { item in
                     BarMark(
-                        x: .value("date", data.date),
-                        y: .value("category", data.amount)
+                        x: .value("date", item.date, unit: .day),
+                        y: .value("price", item.price)
                     )
                 }
             }
@@ -214,12 +214,6 @@ struct ExpencesChartView: View {
 struct ExpenseFuelServiceChartView: View {
     @ObservedObject var viewModel: HomeViewModel
     
-    let testData = [
-        (date: Date(), amount: 7, id: UUID().uuidString),
-        (date: Date().addingTimeInterval(-86400), amount: 5, id: UUID().uuidString),
-        (date: Date().addingTimeInterval(-2 * 86400), amount: 10, id: UUID().uuidString)
-    ]
-    
     var body: some View {
         VStack {
             HStack {
@@ -234,28 +228,49 @@ struct ExpenseFuelServiceChartView: View {
                 .padding(.bottom, 8)
             
             HStack {
-                Text("Для авто")
+                Text("Авто")
                     .bold()
+                    .foregroundStyle(.white)
+                
                 Spacer()
                 
-                
-            }
-            
-            Chart {
-                ForEach(testData, id: \.id) { data in
-                    SectorMark(angle: .value("cost", data.amount), innerRadius: .ratio(0.8), angularInset: 8)
-                        .foregroundStyle(.white.opacity(0.3))
-                        .cornerRadius(5)
-                        .annotation(position: .overlay, alignment: .center) {
-                            Text("\(data.date) \(data.amount)")
-                                .font(.title2)
-                                .bold()
-                                .foregroundStyle(.white)
+                Picker("Авто", selection: $viewModel.selectedCarID) {
+                    
+                    ForEach(viewModel.cars.map({ $0.id }), id: \.self) { id in
+                        if let car = viewModel.cars.first(where: { $0.id == id }) {
+                            Text(car.name).tag(id)
                         }
+                    }
+                }
+                .tint(.white)
+                .background(
+                    RoundedRectangle(cornerRadius: 30)
+                        .fill(.white.opacity(0.1))
+                )
+                .onChange(of: viewModel.selectedCarID) { id in
+                    guard let id, let car = viewModel.cars.first(where: { $0.id == id }) else { return }
+                    viewModel.selectedCarForAnalytic = car
+                    viewModel.updateChartAndTotalData(for: car)
                 }
             }
-            .chartLegend(.visible)
-            .frame(height: 250)
+            
+            if let selectedCar = viewModel.selectedCarForAnalytic {
+                TotalFuelServicePriceView(viewModel: viewModel)
+                
+                ZStack {
+                    Text(String(Int(viewModel.calculateCarCost(selectedCar).rounded())))
+                        .font(.title)
+                        .bold()
+                    
+                    Chart {
+                        ForEach(viewModel.chartDataForSectorChart, id: \.id) { data in
+                            sectorMark(for: data)
+                        }
+                    }
+                    .chartLegend(.visible)
+                    .frame(height: 250)
+                }
+            }
         }
         .foregroundStyle(.white)
         .padding()
@@ -264,5 +279,61 @@ struct ExpenseFuelServiceChartView: View {
                 .fill(.black.opacity(0.1))
         )
         .padding(.horizontal)
+        .padding(.bottom, 100)
+    }
+    
+    private func sectorMark(for data: ExpensesChartItem) -> some ChartContent {
+        SectorMark(
+            angle: .value("cost", data.price),
+            innerRadius: .ratio(0.8),
+            angularInset: 8
+        )
+        .foregroundStyle(.white.opacity(0.3))
+        .cornerRadius(5)
+        .annotation(position: .overlay, alignment: .center) {
+            Text("\(Int(data.price)) \(data.expenseType.rawValue)")
+                .font(.title2)
+                .bold()
+                .foregroundStyle(.white)
+        }
+    }
+}
+
+
+struct TotalFuelServicePriceView: View {
+    @ObservedObject var viewModel: HomeViewModel
+    
+    var body: some View {
+        let data: (Float, Float) = viewModel.totalFuelServicePriceForSelectedCar ?? (0, 0)
+        
+        VStack(spacing: 16) {
+            HStack {
+                Text("Витрачено коштів:")
+                    .bold()
+                
+                Spacer()
+            }
+            
+            HStack(spacing: 64) {
+                VStack {
+                    Text(String(Int(data.0)))
+                        .font(.title)
+                        .bold()
+                    
+                    Text("Пальне")
+                        .bold()
+                }
+                
+                VStack {
+                    Text(String(Int(data.0)))
+                        .font(.title)
+                        .bold()
+                    
+                    Text("Сервіс")
+                        .bold()
+                }
+            }
+            .padding(32)
+        }
     }
 }

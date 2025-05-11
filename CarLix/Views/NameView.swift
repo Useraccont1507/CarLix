@@ -37,6 +37,7 @@ struct NameView: View {
                             .padding(.leading, 8)
                         TextField("", text: $viewModel.userFirstAndLastName)
                             .font(.system(size: 24, weight: .semibold))
+                            .foregroundStyle(.white)
                             .padding()
                             .background(
                                 RoundedRectangle(cornerRadius: 30)

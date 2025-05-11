@@ -16,21 +16,24 @@ protocol TabViewCoordinatorProtocol: CoordinatorProtocol {
     func hideTabBar()
     func changeSelection(_ selection: Selection)
     func getImageName(_ selection: Selection) -> String
+    func switchToAuth()
 }
 
 class TabViewCoordinator: ObservableObject, TabViewCoordinatorProtocol {
     private weak var appCoordinator: AppCoordinatorProtocol?
     let storageService: StorageServiceProtocol?
     let notificationService: NotificationServiceProtocol?
+    let authService: AuthServiceProtocol?
     
     @Published var isTabBarPresented = true
     @Published var isUserProfilePresented = false
     @Published var selection: Selection = .cars
     
-    init(appCoordinator: AppCoordinatorProtocol? = nil ,storageService: StorageServiceProtocol? = nil, notificationService: NotificationServiceProtocol?) {
+    init(appCoordinator: AppCoordinatorProtocol? = nil ,storageService: StorageServiceProtocol? = nil, notificationService: NotificationServiceProtocol?, authService: AuthServiceProtocol?) {
         self.appCoordinator = appCoordinator
         self.storageService = storageService
         self.notificationService = notificationService
+        self.authService = authService
     }
     
     func start() -> AnyView {
@@ -60,5 +63,9 @@ class TabViewCoordinator: ObservableObject, TabViewCoordinatorProtocol {
         case .services:
             "screwdriver"
         }
+    }
+    
+    func switchToAuth() {
+        appCoordinator?.switchToAuth()
     }
 }

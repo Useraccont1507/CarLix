@@ -16,6 +16,13 @@ struct AppCoordinatorFlow: View {
     
     var body: some View {
         ZStack {
+            LinearGradient(colors: [
+                Color.grayGradient,
+                Color.brownGradient,
+                Color.graphiteGradient,
+            ], startPoint: .topLeading, endPoint: .bottomTrailing)
+            .ignoresSafeArea()
+            
             switch coordinator.mainViewType {
             case .greeting:
                 FirstGreeting(viewModel: FirstGreetingViewModel(coordinator: coordinator, notificationService: coordinator.notificationService))
@@ -23,7 +30,7 @@ struct AppCoordinatorFlow: View {
             case .auth:  AuthCoordinator(appcoordinator: coordinator, authService: coordinator.authService, storageService: coordinator.storageService)
                     .start()
                     .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
-            case .main: TabViewCoordinator(appCoordinator: coordinator, storageService: coordinator.storageService, notificationService: coordinator.notificationService)
+            case .main: TabViewCoordinator(appCoordinator: coordinator, storageService: coordinator.storageService, notificationService: coordinator.notificationService, authService: coordinator.authService)
                     .start()
                     .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .move(edge: .bottom)))
                     .transition(.opacity)

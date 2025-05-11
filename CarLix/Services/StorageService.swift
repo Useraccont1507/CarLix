@@ -23,28 +23,51 @@ protocol StorageServiceProtocol {
     func deleteServices(for car: Car) async throws
     func deleteOneFuel(fuel: CarFuel) async throws
     func deleteOneService(service: CarService) async throws
+    func loadUserCredentails() async throws -> (String, Date)
+    func changeFirstAndLastName(with value: String)  async throws
+    func deleteAllUserData() async throws
 }
 
 final class StorageService: StorageServiceProtocol {
-    private let keychainService: KeychainServiceProtocol
+    private let authService: AuthServiceProtocol
     private let db = Firestore.firestore()
     private let storage = Storage.storage()
     private let cache = NSCache<NSString, UIImage>()
     
-    init(keychainService: KeychainServiceProtocol) {
-        self.keychainService = keychainService
+    init(authService: AuthServiceProtocol) {
+        self.authService = authService
     }
     
     func setFirstAndLastName(firstNameAndLastNames: String) async throws {
-        let userId = try getUserId()
+        let userId = getUserId()
         
         try await db.collection("users").document(userId).setData([
-            "fullName" : firstNameAndLastNames
+            "name" : firstNameAndLastNames,
+            "dateCreated" : Timestamp(date: .now)
         ])
     }
     
+    func loadUserCredentails() async throws -> (String, Date) {
+        let userId = getUserId()
+        
+        guard !userId.isEmpty else { return ("", .now)}
+        
+        let doc = try await db.collection("users").document(userId).getDocument()
+        
+        guard let name = doc["name"] as? String else {
+            print("[\(userId)] name error: \(doc["type"] ?? "nil")")
+            return ("", .now)
+        }
+        
+        guard let dateTimestamp = doc["dateCreated"] as? Timestamp else {
+            return (name, .now)
+        }
+        
+        return (name, dateTimestamp.dateValue())
+    }
+    
     func setCar(car: Car) async throws {
-        let userID = try getUserId()
+        let userID = getUserId()
         
         let imageURL = try await saveImageAndGetURL(uiImage: car.image, carId: car.id)
         
@@ -59,12 +82,13 @@ final class StorageService: StorageServiceProtocol {
             "carMileage" : String(car.carMileage),
             "typeOfTransmission" : car.typeOfTransmission.rawValue,
             "typeOfDrive" : car.typeOfDrive.rawValue,
-            "vinCode" : car.vinCode
+            "vinCode" : car.vinCode,
+            "dateAdded" : FieldValue.serverTimestamp()
         ])
     }
     
     func loadCars() async throws -> [Car] {
-        let userID = try getUserId()
+        let userID = getUserId()
         
         
         let snapshot = try await db.collection("users").document(userID).collection("cars").getDocuments()
@@ -84,7 +108,7 @@ final class StorageService: StorageServiceProtocol {
     func editCar(car: Car) async throws {
         var updatedData: [String : String] = [:]
         
-        let userId = try getUserId()
+        let userId = getUserId()
         
         
         let oldDoc = try await db.collection("users").document(userId).collection("cars").document(car.id).getDocument()
@@ -148,7 +172,7 @@ final class StorageService: StorageServiceProtocol {
     }
     
     func deleteCar(car: Car) async throws {
-        let id = try getUserId()
+        let id = getUserId()
         
         let carReference = db.collection("users").document(id).collection("cars").document(car.id)
         
@@ -156,7 +180,7 @@ final class StorageService: StorageServiceProtocol {
            let url = URL(string: imageUrlString) {
             try await storage.reference(for: url).delete()
         }
-
+        
         try await deleteFuels(for: car)
         
         try await deleteServices(for: car)
@@ -165,7 +189,7 @@ final class StorageService: StorageServiceProtocol {
     }
     
     func deleteFuels(for car: Car) async throws {
-        let id = try getUserId()
+        let id = getUserId()
         
         await withThrowingTaskGroup(of: Void.self) { group in
             for fuel in car.fuels {
@@ -183,7 +207,7 @@ final class StorageService: StorageServiceProtocol {
     }
     
     func deleteServices(for car: Car) async throws {
-        let id = try getUserId()
+        let id = getUserId()
         
         await withThrowingTaskGroup(of: Void.self) { group in
             for service in car.services {
@@ -201,7 +225,7 @@ final class StorageService: StorageServiceProtocol {
     }
     
     func deleteOneFuel(fuel: CarFuel) async throws {
-        let fuelReference = db.collection("users").document(try getUserId()).collection("fuels").document(fuel.id)
+        let fuelReference = db.collection("users").document(getUserId()).collection("fuels").document(fuel.id)
         
         try await fuelReference.delete()
         
@@ -212,11 +236,11 @@ final class StorageService: StorageServiceProtocol {
     }
     
     func deleteOneService(service: CarService) async throws {
-        let serviceReference = db.collection("users").document(try getUserId()).collection("services").document(service.id)
+        let serviceReference = db.collection("users").document(getUserId()).collection("services").document(service.id)
         
         try await serviceReference.delete()
         
-        if let imageUrlString = try await serviceReference.getDocument().data()?["documentsURL"] as? String,
+        if let imageUrlString = try await serviceReference.getDocument().data()?["document"] as? String,
            let url = URL(string: imageUrlString) {
             try await storage.reference(for: url).delete()
         }
@@ -286,7 +310,11 @@ final class StorageService: StorageServiceProtocol {
             print("Error with vinCode: \(data["vinCode"] ?? "nil")")
             return nil
         }
-            
+        
+        guard let dateTimestamp = data["dateAdded"] as? Timestamp else {
+            return nil
+        }
+        
         
         return await Car(
             id: docID,
@@ -301,6 +329,7 @@ final class StorageService: StorageServiceProtocol {
             typeOfTransmission: transmission,
             typeOfDrive: drive,
             vinCode: vinCode,
+            dateAdded: dateTimestamp.dateValue(),
             fuels: [],
             services: []
         )
@@ -350,6 +379,7 @@ final class StorageService: StorageServiceProtocol {
         guard let carId = data["carID"] as? String,
               !carId.isEmpty else { return nil }
         
+        
         guard let workDescription = data["workDescription"] as? String,
               !workDescription.isEmpty else { return nil }
         
@@ -364,11 +394,11 @@ final class StorageService: StorageServiceProtocol {
         
         guard let stationName = data["stationName"] as? String else { return nil }
         
-        guard let stationAdress = data["stationAdress"] as? String else { return nil }
+        guard let stationAdress = data["stationAddress"] as? String else { return nil }
         
-        guard let documentsURL = data["documentsURL"] as? String else { return nil }
+        guard let documentsURL = data["documents"] as? String else { return nil }
         
-        guard let date = data["date"] as? Date else { return nil }
+        guard let date = data["date"] as? Timestamp else { return nil }
         
         guard let isNotified = data["isNotified"] as? Bool else { return nil }
         
@@ -381,13 +411,13 @@ final class StorageService: StorageServiceProtocol {
                                 stationName: stationName,
                                 stationAddress: stationAdress,
                                 documents: try? getImageFromURL(urlString: documentsURL),
-                                date: date,
+                                date: date.dateValue(),
                                 isNotified: isNotified,
                                 notificationDate: data["notificationDate"] as? Date)
     }
     
     func loadFuels(for car: Car) async throws -> [CarFuel] {
-        let userID = try self.getUserId()
+        let userID = self.getUserId()
         
         let snapshot = try await db.collection("users").document(userID).collection("fuels").getDocuments()
         
@@ -403,7 +433,7 @@ final class StorageService: StorageServiceProtocol {
     }
     
     func addFuel(fuels: CarFuel, for car: Car) async throws {
-        let userID = try getUserId()
+        let userID = getUserId()
         
         try await db.collection("users").document(userID).collection("fuels").document(fuels.id).setData([
             "id": fuels.id,
@@ -415,13 +445,13 @@ final class StorageService: StorageServiceProtocol {
             "currentMileage": fuels.currentMileage,
             "stationName": fuels.stationName,
             "stationAdress": fuels.stationAddress,
-            "documentsURL": saveDocumentAndGetURL(document: fuels.documents, carId: car.id, fuelID: fuels.id, serviceID: nil),
+            "documentsURL": try await saveDocumentAndGetURL(document: fuels.documents, carId: car.id, fuelID: fuels.id, serviceID: nil),
             "date": FieldValue.serverTimestamp()
         ])
     }
     
     func loadServices(for car: Car) async throws -> [CarService] {
-        let userID = try self.getUserId()
+        let userID = self.getUserId()
         
         let snapshot = try await db.collection("users").document(userID).collection("services").getDocuments()
         
@@ -439,7 +469,7 @@ final class StorageService: StorageServiceProtocol {
     func addService(service: CarService, for car: Car) async throws {
         let userID = try getUserId()
         
-        try  await db.collection("users").document(userID).collection("services").document(service.id).setData([
+        try await db.collection("users").document(userID).collection("services").document(service.id).setData([
             "carID": service.carID,
             "workDescription" : service.workDescription,
             "detailedDescription" : service.detailedDescription,
@@ -448,7 +478,7 @@ final class StorageService: StorageServiceProtocol {
             "price" : service.price,
             "stationName" : service.stationName,
             "stationAddress" : service.stationAddress,
-            "documents" : try saveDocumentAndGetURL(document: service.documents, carId: car.id, fuelID: nil, serviceID: service.id),
+            "documents" : try await saveDocumentAndGetURL(document: service.documents, carId: car.id, fuelID: nil, serviceID: service.id),
             "date" : service.date,
             "isNotified" : service.isNotified,
             "notificationDate" : service.notificationDate
@@ -465,7 +495,7 @@ final class StorageService: StorageServiceProtocol {
             return ""
         }
         
-        let imageRef = storage.reference().child("carImages/\(try getUserId())/\(carId)/carImage.jpg")
+        let imageRef = storage.reference().child("carImages/\(getUserId())/\(carId)/carImage.jpg")
         
         
         let metaData = StorageMetadata()
@@ -489,9 +519,9 @@ final class StorageService: StorageServiceProtocol {
         }
         
         let id = fuelID ?? serviceID ?? UUID().uuidString
-
+        
         let imageRef = storage.reference()
-            .child("documents/\(try getUserId())/\(carId)/\(id)/document")
+            .child("documents/\(getUserId())/\(carId)/\(id)/document")
         
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpeg"
@@ -524,7 +554,19 @@ final class StorageService: StorageServiceProtocol {
         }
     }
     
-    private func getUserId() throws -> String {
-        return try keychainService.getUserID()
+    private func getUserId() -> String {
+        authService.getUserID()
+    }
+    
+    func changeFirstAndLastName(with value: String) async throws {
+        let userId = getUserId()
+        
+        try await db.collection("users").document(userId).updateData(["name" : value])
+    }
+    
+    func deleteAllUserData() async throws {
+        let userId = getUserId()
+        
+        try await db.collection("users").document(userId).delete()
     }
 }

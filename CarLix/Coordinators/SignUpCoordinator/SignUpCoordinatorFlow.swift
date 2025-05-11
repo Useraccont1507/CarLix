@@ -29,5 +29,5 @@ struct SignUpCoordinatorFlow: View {
 }
 
 #Preview {
-    SignUpCoordinatorFlow(coordinator: SignUpCoordinator(), authService: AuthService(keychainService: KeychainService()))
+    SignUpCoordinatorFlow(coordinator: SignUpCoordinator(), authService: AuthService())
 }

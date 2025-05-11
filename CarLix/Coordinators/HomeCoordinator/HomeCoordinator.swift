@@ -15,17 +15,20 @@ enum HomePath: Hashable {
 protocol HomeCoordinatorProtocol: CoordinatorProtocol {
     func moveToProfile()
     func back()
+    func switchToAuth()
 }
 
 final class HomeCoordinator: HomeCoordinatorProtocol, ObservableObject {
     private weak var tabViewCoordinator: TabViewCoordinatorProtocol?
     let storageService: StorageServiceProtocol?
+    let authService: AuthServiceProtocol?
     @Published var blur: CGFloat = 0
     @Published var loadingState: LoadingState = .none
     @Published var navigationPath = NavigationPath()
     
-    init(storageService: StorageServiceProtocol? = nil ,tabViewCoordinator: TabViewCoordinatorProtocol? = nil) {
+    init(storageService: StorageServiceProtocol? = nil ,tabViewCoordinator: TabViewCoordinatorProtocol? = nil, authService: AuthServiceProtocol? = nil) {
         self.storageService = storageService
+        self.authService = authService
         self.tabViewCoordinator = tabViewCoordinator
     }
     
@@ -51,18 +54,12 @@ final class HomeCoordinator: HomeCoordinatorProtocol, ObservableObject {
         loadingState = .error
     }
     
-//    func showAddSuccessView() {
-//        blur = 10
-//        loadingState = .addSuccess
-//    }
-    
-//    func showDeleteSuccessView() {
-//        blur = 10
-//        loadingState = .deleteSuccess
-//    }
-    
     func back() {
         tabViewCoordinator?.showTabBar()
         navigationPath.removeLast()
+    }
+    
+    func switchToAuth() {
+        tabViewCoordinator?.switchToAuth()
     }
 }

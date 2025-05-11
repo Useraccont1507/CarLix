@@ -53,13 +53,12 @@ final class AllFuelsServicesViewModel: ObservableObject {
             await withThrowingTaskGroup(of: Void.self) { group in
                 for car in cars {
                     group.addTask { [weak self] in
-                        guard let self else { return }
+                        guard let self = self else { return }
                         
                         if self.isFuelPresented {
                             let fuels = try await storage.loadFuels(for: car)
                             for fuel in fuels {
                                 await MainActor.run {
-                                    self.fuels = []
                                     self.fuels.append(fuel)
                                 }
                             }
@@ -67,7 +66,6 @@ final class AllFuelsServicesViewModel: ObservableObject {
                             let services = try await storage.loadServices(for: car)
                             for service in services {
                                 await MainActor.run {
-                                    self.fuels = []
                                     self.services.append(service)
                                 }
                             }
@@ -75,7 +73,6 @@ final class AllFuelsServicesViewModel: ObservableObject {
                     }
                 }
             }
-            
             await MainActor.run {
                 coordinator?.hideView()
             }

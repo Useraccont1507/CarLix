@@ -19,7 +19,7 @@ struct TabViewCoordinatorFlow: View {
         _carsCoordinator = StateObject(wrappedValue: CarsCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator))
         _fuelsCoordinator = StateObject(wrappedValue: FuelsServicesCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator, notificationService: tabViewCoordinator.notificationService, isFuelPresent: true))
         _servicesCoordinator = StateObject(wrappedValue: FuelsServicesCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator, notificationService: tabViewCoordinator.notificationService, isFuelPresent: false))
-        _homeCoordinator = StateObject(wrappedValue: HomeCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator))
+        _homeCoordinator = StateObject(wrappedValue: HomeCoordinator(storageService: tabViewCoordinator.storageService, tabViewCoordinator: tabViewCoordinator, authService: tabViewCoordinator.authService))
     }
     
     var body: some View {
@@ -52,7 +52,7 @@ struct TabViewCoordinatorFlow: View {
 }
 
 #Preview {
-    TabViewCoordinatorFlow(storageService: nil, tabViewCoordinator: TabViewCoordinator(appCoordinator: AppCoordinator(), notificationService: nil))
+    TabViewCoordinatorFlow(storageService: nil, tabViewCoordinator: TabViewCoordinator(appCoordinator: AppCoordinator(), notificationService: nil, authService: nil))
 }
 
 struct CustomBar: View {
