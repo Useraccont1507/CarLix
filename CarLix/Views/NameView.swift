@@ -20,7 +20,7 @@ struct NameView: View {
             .ignoresSafeArea()
             
             VStack {
-                Text("LastStep")
+                Text("Останній крок")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundStyle(.white)
@@ -30,7 +30,7 @@ struct NameView: View {
                 
                 VStack {
                     VStack(alignment: .leading) {
-                        Text("EnterFirstAndLastNames")
+                        Text("Введіть ім'я та призвіще")
                             .font(.headline)
                             .fontWeight(.semibold)
                             .foregroundStyle(.white)
@@ -50,7 +50,7 @@ struct NameView: View {
                     Button {
                         viewModel.completeRegistration()
                     } label: {
-                        Text("CompleteRegistration")
+                        Text("Завершити")
                             .font(.body)
                             .fontWeight(.bold)
                             .foregroundStyle(.white)

@@ -23,7 +23,7 @@ struct SignUpView: View {
             VStack {
                 VStack {
                     HStack {
-                        Text("SigningUp")
+                        Text("Реєстрація")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundStyle(.white)
@@ -66,7 +66,7 @@ struct SignUpView: View {
                             )
                             .padding(.bottom)
                         
-                        Text("Password")
+                        Text("Пароль")
                             .font(.headline)
                             .fontWeight(.semibold)
                             .foregroundStyle(.white)
@@ -85,7 +85,7 @@ struct SignUpView: View {
                                     .foregroundStyle(.white.opacity(0.1))
                             )
                         
-                        Text("PasswordRequirements")
+                        Text("Пароль повинен містити хоча б 6 символів")
                             .font(.footnote)
                             .fontWeight(.regular)
                             .multilineTextAlignment(.leading)
@@ -95,7 +95,7 @@ struct SignUpView: View {
                         
                         
                         if viewModel.emailIsNotCorrect {
-                            Text("IncorrectEmail")
+                            Text("Неправильний email")
                                 .font(.footnote)
                                 .fontWeight(.regular)
                                 .multilineTextAlignment(.leading)
@@ -105,7 +105,7 @@ struct SignUpView: View {
                         }
                         
                         if viewModel.emailIsAlreadyUsed {
-                            Text("EmailAlreadyUsed")
+                            Text("Схоже email вже використовується. Спробуйте інший")
                                 .font(.footnote)
                                 .fontWeight(.regular)
                                 .multilineTextAlignment(.leading)
@@ -113,7 +113,7 @@ struct SignUpView: View {
                         }
                         
                         if viewModel.undefinedError {
-                            Text("UndefinedError")
+                            Text("Щось пішло не так. Спробуйте пізніше")
                                 .font(.footnote)
                                 .fontWeight(.regular)
                                 .multilineTextAlignment(.leading)
@@ -142,7 +142,7 @@ struct SignUpView: View {
                                         .frame(width: 46, height: 46)
                                 }
                                 
-                                Text("SignUp")
+                                Text("Зареєструватись")
                                     .font(.body)
                                     .fontWeight(.semibold)
                                     .foregroundStyle(.white)

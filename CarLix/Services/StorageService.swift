@@ -318,7 +318,7 @@ final class StorageService: StorageServiceProtocol {
         
         return await Car(
             id: docID,
-            image: try? getImageFromURL(urlString: imageURL),
+            image: try? getImageFromURLOrCache(urlString: imageURL),
             type: type,
             name: name,
             year: year,
@@ -371,7 +371,7 @@ final class StorageService: StorageServiceProtocol {
             currentMileage: currentMileage,
             stationName: stationName,
             stationAddress: stationAdress,
-            documents: try? getImageFromURL(urlString: documentsURL),
+            documents: try? getImageFromURLOrCache(urlString: documentsURL),
             date: dateTimestamp.dateValue())
     }
     
@@ -410,7 +410,7 @@ final class StorageService: StorageServiceProtocol {
                                 price: price,
                                 stationName: stationName,
                                 stationAddress: stationAdress,
-                                documents: try? getImageFromURL(urlString: documentsURL),
+                                documents: try? getImageFromURLOrCache(urlString: documentsURL),
                                 date: date.dateValue(),
                                 isNotified: isNotified,
                                 notificationDate: data["notificationDate"] as? Date)
@@ -535,23 +535,27 @@ final class StorageService: StorageServiceProtocol {
         return url
     }
     
-    private func getImageFromURL(urlString: String) async throws -> UIImage? {
-        guard !urlString.isEmpty else { return nil }
-        
+    private func getImageFromURLOrCache(urlString: String) async throws -> UIImage? {
         if let image = CacheManager.shared.image(forKey: urlString) {
             CacheManager.shared.insertImage(image, forKey: urlString)
             return image
         } else {
-            let ref = storage.reference(forURL: urlString)
-            
-            let data = try await ref.data(maxSize: 5 * 1024 * 1024)
-            
-            guard let image = UIImage(data: data) else {
-                print("Can not get image from data")
-                return nil
-            }
-            return image
+            return try await getImageFromURL(urlString: urlString)
         }
+    }
+    
+    private func getImageFromURL(urlString: String) async throws -> UIImage? {
+        guard !urlString.isEmpty else { return nil }
+        
+        let ref = storage.reference(forURL: urlString)
+        
+        let data = try await ref.data(maxSize: 5 * 1024 * 1024)
+        
+        guard let image = UIImage(data: data) else {
+            print("Can not get image from data")
+            return nil
+        }
+        return image
     }
     
     private func getUserId() -> String {

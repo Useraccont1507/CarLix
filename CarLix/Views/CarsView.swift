@@ -54,7 +54,7 @@ struct HeaderBar: View {
     
     var body: some View {
         HStack {
-            Text("MyCars")
+            Text("Мої авто")
                 .font(.system(size: 46, weight: .bold))
                 .foregroundStyle(.white)
             

@@ -20,7 +20,7 @@ struct AuthView: View {
             .ignoresSafeArea()
             
             VStack {
-                Text("Authorize")
+                Text("Авторизуйтесь перш ніж розпочати")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.leading)
@@ -44,7 +44,7 @@ struct AuthView: View {
                             )
                             .frame(width: 46, height: 46)
                         
-                        Text("SignUp")
+                        Text("Зареєструватись")
                             .font(.body)
                             .fontWeight(.bold)
                             .foregroundStyle(.white)
@@ -57,7 +57,7 @@ struct AuthView: View {
                     )
                 }
                 
-                Text("Or")
+                Text("або")
                     .font(.body)
                     .fontWeight(.medium)
                     .foregroundStyle(.white)
@@ -77,7 +77,7 @@ struct AuthView: View {
                             )
                             .frame(width: 46, height: 46)
                         
-                        Text("SignIn")
+                        Text("Увійти")
                             .font(.body)
                             .fontWeight(.bold)
                             .foregroundStyle(.white)

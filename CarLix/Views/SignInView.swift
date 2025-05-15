@@ -21,7 +21,7 @@ struct SignInView: View {
             
             VStack {
                 VStack {
-                    Text("SigningIn")
+                    Text("Вхід")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundStyle(.white)
@@ -53,7 +53,7 @@ struct SignInView: View {
                             .padding(.bottom)
                         
                         VStack {
-                            Text("Password")
+                            Text("Пароль")
                                 .font(.callout)
                                 .fontWeight(.semibold)
                                 .foregroundStyle(.white)
@@ -72,7 +72,7 @@ struct SignInView: View {
                                         .foregroundStyle(.white.opacity(0.1))
                                 )
                             
-                            Text("PasswordRequirements")
+                            Text("Пароль повинен містити хоча б 6 символів")
                                 .font(.footnote)
                                 .fontWeight(.regular)
                                 .multilineTextAlignment(.leading)
@@ -81,7 +81,7 @@ struct SignInView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
                             if !viewModel.isDataCorrect {
-                                Text("EmailOrPasswordAreWrong")
+                                Text("Невірний email або пароль")
                                     .font(.footnote)
                                     .fontWeight(.regular)
                                     .multilineTextAlignment(.leading)
@@ -114,7 +114,7 @@ struct SignInView: View {
                                         .frame(width: 46, height: 46)
                                 }
                                 
-                                Text("SignIn")
+                                Text("Увійти")
                                     .font(.body)
                                     .fontWeight(.bold)
                                     .foregroundStyle(.white)

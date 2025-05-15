@@ -80,14 +80,14 @@ struct BeginView: View {
         GeometryReader { proxy in
             VStack {
                 VStack(alignment: .leading) {
-                    Text("welcomeLocalized")
+                    Text("Вітаємо")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.white)
                         .padding(.bottom)
                     
-                    Text("descriptionLocalized")
+                    Text("CarLix - додаток для ведення історії вашого авто. Контролюйте пальне, сервіс та інші витрати. Отримуйте нагадування про обслуговування автівки. Уся статистика у вашій кишені")
                         .font(.title2)
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.leading)
@@ -115,14 +115,14 @@ struct AddCarsView: View {
         GeometryReader { proxy in
             VStack {
                 VStack(alignment: .leading) {
-                    Text("AddingCarLocalized")
+                    Text("Додавайте авто")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.white)
                         .padding(.bottom)
                     
-                    Text("TrackHistoryLocalized")
+                    Text("для ведення історії")
                         .font(.title2)
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.leading)
@@ -150,7 +150,7 @@ struct AddFuelingAndServiceView: View {
     var body: some View {
         GeometryReader { proxy in
             VStack {
-                Text("AddFuilengServiceAndLocalized")
+                Text("Додавайте сервіс, пальне")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.leading)
@@ -177,7 +177,7 @@ struct TrackCarHistoryView: View {
     var body: some View {
         GeometryReader { proxy in
             VStack {
-                Text("TrackCarHistoryViewLocalized")
+                Text("Слідкуйте за історією авто")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.leading)
@@ -207,7 +207,7 @@ struct ReceiveNotificationView: View {
     var body: some View {
         GeometryReader { proxy in
             VStack(alignment: .center) {
-                Text("ReceiveNotificationLocalized")
+                Text("Та отримуйте сповіщення про наступний сервіс")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.leading)
@@ -242,7 +242,7 @@ struct AllowNotificationView: View {
                     .frame(width: 46, height: 46)
                     .foregroundStyle(.white)
                     .padding(.bottom, 24)
-                Text("AddPermission")
+                Text("Надайте дозвіл сповіщеня для CarLix аби отримати зрчуний досвід користування додатком")
                     .font(.callout)
                     .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
@@ -279,7 +279,7 @@ struct NotificationWasDeniedView: View {
     
     var body: some View {
         VStack {
-            Text("WeRecomend")
+            Text("Радимо Вам все ж таки увімкнути сповіщення для CarLix. Це можна зробити в налаштуваннях")
                 .font(.callout)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
@@ -315,7 +315,7 @@ struct EndView: View {
         GeometryReader { proxy in
             VStack(alignment: .center) {
                 VStack(alignment: .leading) {
-                    Text("LookAfterCar")
+                    Text("Слідкуйте за своїм авто разом з")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.leading)
