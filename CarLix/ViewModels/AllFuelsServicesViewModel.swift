@@ -44,42 +44,41 @@ final class AllFuelsServicesViewModel: ObservableObject {
         }
         
         do {
-            let cars = try await storage.loadCars()
-            
             await MainActor.run {
-                self.cars = cars
+                self.cars = []
             }
             
-            await withThrowingTaskGroup(of: Void.self) { group in
-                for car in cars {
+            try await withThrowingTaskGroup(of: Void.self) { group in
+                for try await car in storage.listenCars() {
+                    await MainActor.run {
+                        self.cars.append(car)
+                        coordinator?.hideView()
+                    }
+                    
                     group.addTask { [weak self] in
                         guard let self = self else { return }
                         
                         if self.isFuelPresented {
                             let fuels = try await storage.loadFuels(for: car)
-                            for fuel in fuels {
-                                await MainActor.run {
-                                    self.fuels.append(fuel)
-                                }
+                            await MainActor.run {
+                                self.fuels.append(contentsOf: fuels)
                             }
                         } else {
                             let services = try await storage.loadServices(for: car)
-                            for service in services {
-                                await MainActor.run {
-                                    self.services.append(service)
-                                }
+                            await MainActor.run {
+                                self.services.append(contentsOf: services)
                             }
                         }
                     }
                 }
-            }
-            await MainActor.run {
-                coordinator?.hideView()
+                try await group.waitForAll()
             }
         } catch {
             print("Error occured while loading data: \(error.localizedDescription)")
-            coordinator?.hideView()
-            coordinator?.showErrorView()
+            await MainActor.run {
+                coordinator?.hideView()
+                coordinator?.showErrorView()
+            }
         }
     }
     

@@ -31,23 +31,20 @@ class CarsViewModel: ObservableObject {
     
     func loadCars() {
         isLoadingViewPresented = true
-        
+
         guard let service = storageService else {
             print("Storage service is nil in carsVM")
             return
         }
         
         Task {
-            do {
-                let cars = try await service.loadCars()
-                
+            for await car in service.listenCars() {
                 await MainActor.run {
-                    self.cars = cars
-                    isLoadingViewPresented = false
+                    self.cars.append(car)
+                    self.isLoadingViewPresented = false
                 }
-            } catch {
-                print("Error while loading cars: \(error.localizedDescription)")
             }
         }
     }
+
 }

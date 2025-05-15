@@ -12,9 +12,10 @@ import FirebaseStorage
 protocol StorageServiceProtocol {
     func setFirstAndLastName(firstNameAndLastNames: String) async throws
     func setCar(car: Car) async throws
-    func loadCars() async throws -> [Car]
+    func listenCars() -> AsyncStream<Car>
     func editCar(car: Car) async throws
     func deleteCar(car: Car) async throws
+    func loadCars() async throws -> [Car]
     func loadFuels(for car: Car) async throws -> [CarFuel]
     func addFuel(fuels: CarFuel, for car: Car) async throws
     func loadServices(for car: Car) async throws -> [CarService]
@@ -87,22 +88,32 @@ final class StorageService: StorageServiceProtocol {
         ])
     }
     
-    func loadCars() async throws -> [Car] {
+    func listenCars() -> AsyncStream<Car> {
         let userID = getUserId()
         
+        let query = db.collection("users").document(userID).collection("cars")
         
-        let snapshot = try await db.collection("users").document(userID).collection("cars").getDocuments()
-        
-        var result: [Car] = []
-        
-        for doc in snapshot.documents {
-            
-            if let car = await generateCarFromDoc(data: doc.data(), docID: doc.documentID) {
-                result.append(car)
+        return AsyncStream { continuation in
+            let listener = query.addSnapshotListener { snapshot, error in
+                guard let snapshot = snapshot, error == nil else {
+                    continuation.finish()
+                    return
+                }
+                
+                for docChange in snapshot.documentChanges {
+                    if docChange.type == .added || docChange.type == .modified {
+                        Task {
+                            if let car = await self.generateCarFromDoc(data: docChange.document.data(), docID: docChange.document.documentID) {
+                                continuation.yield(car)
+                            }
+                        }
+                    }
+                }
+            }
+            continuation.onTermination = { @Sendable _ in
+                listener.remove()
             }
         }
-        
-        return result
     }
     
     func editCar(car: Car) async throws {
@@ -186,6 +197,24 @@ final class StorageService: StorageServiceProtocol {
         try await deleteServices(for: car)
         
         try await carReference.delete()
+    }
+    
+    func loadCars() async throws -> [Car] {
+        let userID = getUserId()
+        
+        
+        let snapshot = try await db.collection("users").document(userID).collection("cars").getDocuments()
+        
+        var result: [Car] = []
+        
+        for doc in snapshot.documents {
+            
+            if let car = await generateCarFromDoc(data: doc.data(), docID: doc.documentID) {
+                result.append(car)
+            }
+        }
+        
+        return result
     }
     
     func deleteFuels(for car: Car) async throws {
