@@ -38,48 +38,48 @@ final class AllFuelsServicesViewModel: ObservableObject {
     }
     
     private func loadDataAsync() async {
-//        guard let storage = storage else {
-//            print("Storage is nil")
-//            return
-//        }
-//        
-//        do {
-//            await MainActor.run {
-//                self.cars = []
-//            }
-//            
-//            try await withThrowingTaskGroup(of: Void.self) { group in
-//                for try await car in storage.listenCars() {
-//                    await MainActor.run {
-//                        self.cars.append(car)
-//                        coordinator?.hideView()
-//                    }
-//                    
-//                    group.addTask { [weak self] in
-//                        guard let self = self else { return }
-//                        
-//                        if self.isFuelPresented {
-//                            let fuels = try await storage.loadFuels(for: car)
-//                            await MainActor.run {
-//                                self.fuels.append(contentsOf: fuels)
-//                            }
-//                        } else {
-//                            let services = try await storage.loadServices(for: car)
-//                            await MainActor.run {
-//                                self.services.append(contentsOf: services)
-//                            }
-//                        }
-//                    }
-//                }
-//                try await group.waitForAll()
-//            }
-//        } catch {
-//            print("Error occured while loading data: \(error.localizedDescription)")
-//            await MainActor.run {
-//                coordinator?.hideView()
-//                coordinator?.showErrorView()
-//            }
-//        }
+        guard let storage = storage else {
+            print("Storage is nil")
+            return
+        }
+        
+        do {
+            await MainActor.run {
+                self.cars = []
+            }
+            
+            try await withThrowingTaskGroup(of: Void.self) { group in
+                for try await car in storage.listenCars() {
+                    await MainActor.run {
+                        self.cars.append(car)
+                        coordinator?.hideView()
+                    }
+                    
+                    group.addTask { [weak self] in
+                        guard let self = self else { return }
+                        
+                        if self.isFuelPresented {
+                            let fuels = try await storage.loadFuels(for: car)
+                            await MainActor.run {
+                                self.fuels.append(contentsOf: fuels)
+                            }
+                        } else {
+                            let services = try await storage.loadServices(for: car)
+                            await MainActor.run {
+                                self.services.append(contentsOf: services)
+                            }
+                        }
+                    }
+                }
+                try await group.waitForAll()
+            }
+        } catch {
+            print("Error occured while loading data: \(error.localizedDescription)")
+            await MainActor.run {
+                coordinator?.hideView()
+                coordinator?.showErrorView()
+            }
+        }
     }
     
     func showAddFuelsServices() {

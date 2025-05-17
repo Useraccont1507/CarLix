@@ -42,9 +42,6 @@ struct CarsView: View {
         .onAppear {
             viewModel.loadCars()
         }
-        .onDisappear {
-            viewModel.stopListen()
-        }
     }
 }
 
@@ -91,7 +88,6 @@ struct CarList: View {
             LazyVStack {
                 ForEach(viewModel.cars, id: \.id) { car in
                     ShortDescription(car: car, viewModel: viewModel)
-                        .padding(.bottom, viewModel.cars.last == car ? 100 : 0)
                 }
             }
             .buttonStyle(PlainButtonStyle())

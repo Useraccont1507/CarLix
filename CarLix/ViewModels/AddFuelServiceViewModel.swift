@@ -49,15 +49,15 @@ final class AddFuelServiceViewModel: ObservableObject {
     func loadCars() {
         guard let storage = storage else { return }
         
-//        Task {
-//            for try await car in storage.listenCars() {
-//                await MainActor.run {
-//                    coordinator?.hideView()
-//                    self.cars.append(car)
-//                    carID = car.id
-//                }
-//            }
-//        }
+        Task {
+            for try await car in storage.listenCars() {
+                await MainActor.run {
+                    coordinator?.hideView()
+                    self.cars.append(car)
+                    carID = car.id
+                }
+            }
+        }
     }
         
     func add() {
