@@ -108,6 +108,7 @@ final class AddEditCarViewModel: ObservableObject {
                    
                     await MainActor.run {
                         savingCycle = .saved
+                        coordinator?.popToRoot()
                     }
                     
                 } catch {

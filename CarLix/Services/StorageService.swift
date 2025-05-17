@@ -566,7 +566,6 @@ final class StorageService: StorageServiceProtocol {
     
     private func getImageFromURLOrCache(urlString: String) async throws -> UIImage? {
         if let image = CacheManager.shared.image(forKey: urlString) {
-            CacheManager.shared.insertImage(image, forKey: urlString)
             return image
         } else {
             return try await getImageFromURL(urlString: urlString)
@@ -584,6 +583,8 @@ final class StorageService: StorageServiceProtocol {
             print("Can not get image from data")
             return nil
         }
+        
+        CacheManager.shared.insertImage(image, forKey: urlString)
         return image
     }
     
